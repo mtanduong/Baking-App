@@ -21,8 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ingredient_textview"
-        tools:listitem=""
-        />
+        tools:itemCount="5"
+        tools:listitem="@layout/ingredient_list_item" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -38,7 +38,8 @@
         android:id="@+id/step_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem=""
+        tools:itemCount="5"
+        tools:listitem="@layout/step_list_item"
         />
 
 </LinearLayout>
