@@ -1,7 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#123456"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:id="@+id/ingredient_linear_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:id="@+id/ingredient_list_item_quantity_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:textSize="20sp"
+            android:textColor="#FFF"
+            tools:text="2"
+            />
+
+        <TextView
+            android:id="@+id/ingredient_list_item_measure_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/ingredient_list_item_quantity_text"
+            android:textSize="20sp"
+            android:textColor="#FFF"
+            tools:text="CUP"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/ingredient_of"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/of"
+        android:textSize="20sp"
+        android:textColor="#FFF"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/ingredient_linear_layout"/>
+
+    <TextView
+        android:id="@+id/ingredient_list_item_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ingredient_of"
+        android:textSize="20sp"
+        android:textColor="#FFF"
+        tools:text="Graham Cracker crumbs"
+        />
 
 </RelativeLayout>
