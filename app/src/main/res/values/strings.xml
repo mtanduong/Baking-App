@@ -3,4 +3,8 @@
 
     <!--Ingredient List-->
     <string name="of">of</string>
+
+    <!--Master Fragment-->
+    <string name="Ingredients">Ingredients</string>
+    <string name="Steps">Steps</string>
 </resources>
