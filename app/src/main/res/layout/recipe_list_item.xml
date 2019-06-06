@@ -13,14 +13,71 @@
         tools:src="@drawable/default_recipe_image2"/>
 
     <TextView
-        android:id="@+id/recipe_list_item_name"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/recipe_list_item_image"
+        android:padding="5dp"
+        android:background="#80000000"
+        android:textSize="25sp"/>
+
+    <TextView
+        android:id="@+id/recipe_list_item_name"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="5dp"
         android:layout_alignBottom="@id/recipe_list_item_image"
         android:textColor="#FFF"
         android:textStyle="bold"
-        android:background="#80000000"
         android:textSize="25sp"
         tools:text="Nutella Pie" />
+
+    <TextView
+        android:id="@+id/recipe_servings_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/recipe_list_item_image"
+        android:layout_toRightOf="@+id/recipe_list_item_name"
+        android:paddingLeft="10dp"
+        android:text="@string/RecipeServings"
+        android:textStyle="italic"
+        android:textColor="#FFF"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/recipe_servings_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/recipe_list_item_image"
+        android:layout_toRightOf="@+id/recipe_servings_text"
+        android:paddingLeft="5dp"
+        android:textStyle="italic"
+        android:textColor="#FFF"
+        android:textSize="16sp"
+        tools:text="6"/>
+
+    <TextView
+        android:id="@+id/recipe_steps_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/recipe_servings_text"
+        android:layout_toRightOf="@+id/recipe_list_item_name"
+        android:paddingLeft="10dp"
+        android:paddingBottom="2dp"
+        android:text="@string/RecipeSteps"
+        android:textStyle="italic"
+        android:textColor="#FFF"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/recipe_steps_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/recipe_servings_text"
+        android:layout_toRightOf="@+id/recipe_steps_text"
+        android:paddingLeft="5dp"
+        android:paddingBottom="2dp"
+        android:textStyle="italic"
+        android:textColor="#FFF"
+        android:textSize="16sp"
+        tools:text="6"/>
 </RelativeLayout>

@@ -7,4 +7,8 @@
     <!--Master Fragment-->
     <string name="Ingredients">Ingredients</string>
     <string name="Steps">Steps</string>
+
+    <!--Recipe RecyclerView-->
+    <string name="RecipeServings">Servings:</string>
+    <string name="RecipeSteps">Steps:</string>
 </resources>
