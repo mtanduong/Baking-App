@@ -13,6 +13,7 @@ import com.example.bakingapp.models.Step;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,10 +23,12 @@ public class StepRecyclerViewAdapter extends RecyclerView.Adapter<StepRecyclerVi
     private static final String TAG = "StepAdapter";
     private Context context;
     private List<Step> stepData;
+    private int[] tracker;
 
-    public StepRecyclerViewAdapter(Context context, List<Step> setpData) {
+    public StepRecyclerViewAdapter(Context context, List<Step> setpData, int[] tracker) {
         this.context = context;
         this.stepData = stepData;
+        this.tracker = tracker;
     }
 
     public static class StepViewHolder extends RecyclerView.ViewHolder {
@@ -62,13 +65,13 @@ public class StepRecyclerViewAdapter extends RecyclerView.Adapter<StepRecyclerVi
 
         holder.stepText.setText(currentStep.getShortDescription());
 
-        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                //TODO - onClick action for stepRecyclerViewAdapter
-            }
-        });
+        if(tracker[position] == 1) {
+            holder.parentLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent));
+            holder.stepText.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+        } else {
+            holder.parentLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
+            holder.stepText.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
+        }
     }
 
     @Override
