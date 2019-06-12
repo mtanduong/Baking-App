@@ -14,4 +14,10 @@
     <!--Recipe RecyclerView-->
     <string name="RecipeServings">Servings:</string>
     <string name="RecipeSteps">Steps:</string>
+
+    <!--Error-->
+    <string name="retry">Retry</string>
+    <string name="no_connection_icon">No Connection Icon</string>
+    <string name="no_server_icon">No Server Icon</string>
+
 </resources>
