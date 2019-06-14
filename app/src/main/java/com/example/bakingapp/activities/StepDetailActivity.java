@@ -6,10 +6,12 @@ import com.example.bakingapp.R;
 import com.example.bakingapp.fragments.RecipeDetailFragment;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 public class StepDetailActivity extends AppCompatActivity {
 
-    RecipeDetailFragment detailsFragment;
+    Fragment detailsFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,31 +29,39 @@ public class StepDetailActivity extends AppCompatActivity {
 
             detailsFragment = new RecipeDetailFragment();
             detailsFragment.setArguments(bundle);
-            //Deprecated in API 28, use FragmentActivity.getSupportFragmentManager()
-            getFragmentManager().beginTransaction()
-                    .add(R.id.activity_step_detail_framelayout, detailsFragment)
-                    .commit();
+
+            detailsFragment.getFragmentManager().beginTransaction().add(R.id.activity_step_detail_framelayout, detailsFragment).commit();
+            //Deprecated
+//            getFragmentManager().beginTransaction()
+//                    .add(R.id.activity_step_detail_framelayout, detailsFragment)
+//                    .commit();
         }
     }
 
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        getFragmentManager().putFragment(outState,"fragment",detailsFragment);
+        detailsFragment.getFragmentManager().putFragment(outState, "fragment", detailsFragment);
+        //Deprecated
+//        getFragmentManager().putFragment(outState,"fragment",detailsFragment);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        detailsFragment = (RecipeDetailFragment) getFragmentManager().getFragment(savedInstanceState,"fragment");
+        detailsFragment.getFragmentManager().getFragment(savedInstanceState, "fragment");
+        //Deprecated
+//        detailsFragment = (RecipeDetailFragment) getFragmentManager().getFragment(savedInstanceState,"fragment");
         if(detailsFragment.isAdded())
         {
             return;
         }
-        getFragmentManager().beginTransaction()
-                .add(R.id.activity_step_detail_framelayout, detailsFragment)
-                .commit();
+        detailsFragment.getFragmentManager().beginTransaction().add(R.id.activity_step_detail_framelayout, detailsFragment);
+        //Deprecated
+//        getFragmentManager().beginTransaction()
+//                .add(R.id.activity_step_detail_framelayout, detailsFragment)
+//                .commit();
     }
 
 }
