@@ -1,6 +1,5 @@
 package com.example.bakingapp.activities;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.FrameLayout;
@@ -14,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 public class RecipeDetailActivity extends AppCompatActivity {
     FrameLayout detailFragment;
@@ -22,8 +22,8 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
     String name;
 
-    RecipeDetailFragment recipeDetailFragment;
-    RecipeMasterFragment recipeMasterFragment;
+    Fragment recipeDetailFragment;
+    Fragment recipeMasterFragment;
 
 
     @Override
@@ -40,28 +40,40 @@ public class RecipeDetailActivity extends AppCompatActivity {
         extras.putBoolean("tablet", (detailFragment != null));
 
         if (savedInstanceState == null) {
+            //Related to Widget
             //recipeMasterFragment = new StepFragment();
             //recipeMasterFragment.setFragmentListener(this);
             recipeMasterFragment.setArguments(extras);
-            getFragmentManager().beginTransaction().add(R.id.master_fragment_holder, recipeMasterFragment).commit();
+            recipeMasterFragment.getFragmentManager().beginTransaction().add(R.id.master_fragment_holder, recipeMasterFragment).commit();
+
             //checking if screen size greater than 600dp
             if (detailFragment == null) {
                 isTablet = false;
             } else {
+                //Related to Widget
                 //this.setStep(0, steps);
             }
         } else {
-            recipeMasterFragment = (RecipeMasterFragment) getFragmentManager().getFragment(savedInstanceState,"main");
+            recipeMasterFragment.getFragmentManager().getFragment(savedInstanceState, "main");
+            //Deprecated
+//            recipeMasterFragment = (RecipeMasterFragment) getFragmentManager().getFragment(savedInstanceState,"main");
+            //Related to Widget
             //recipeMasterFragment.setFragmentListener(this);
 
 
             if (!recipeMasterFragment.isAdded())
-                getFragmentManager().beginTransaction().add(R.id.master_fragment_holder, recipeMasterFragment).commit();
+                recipeMasterFragment.getFragmentManager().beginTransaction().add(R.id.master_fragment_holder, recipeMasterFragment).commit();
+            //Deprecated
+            //getFragmentManager().beginTransaction().add(R.id.master_fragment_holder, recipeMasterFragment).commit();
 
             if(recipeDetailFragment !=null)
             {
-                recipeDetailFragment =  (RecipeDetailFragment) getFragmentManager().getFragment(savedInstanceState,"detail");
-                getFragmentManager().beginTransaction().replace(R.id.detail_fragment_holder, recipeDetailFragment).commit();
+                recipeDetailFragment.getFragmentManager().getFragment(savedInstanceState, "detail");
+                //Deprecated
+                //recipeDetailFragment =  (RecipeDetailFragment) getFragmentManager().getFragment(savedInstanceState,"detail");
+                recipeDetailFragment.getFragmentManager().beginTransaction().replace(R.id.detail_fragment_holder, recipeDetailFragment).commit();
+                //Deprecated
+                //getFragmentManager().beginTransaction().replace(R.id.detail_fragment_holder, recipeDetailFragment).commit();
             }
         }
 
@@ -103,12 +115,16 @@ public class RecipeDetailActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getFragmentManager().putFragment(outState, "main", recipeMasterFragment);
+        recipeMasterFragment.getFragmentManager().putFragment(outState, "main", recipeMasterFragment);
+        //Deprecated
+        //getFragmentManager().putFragment(outState, "main", recipeMasterFragment);
 
         if (isTablet && detailFragment!=null)
         {
             try{
-                getFragmentManager().putFragment(outState, "detail", recipeDetailFragment);
+                recipeDetailFragment.getFragmentManager().putFragment(outState, "detail", recipeDetailFragment);
+                //Deprecated
+                //getFragmentManager().putFragment(outState, "detail", recipeDetailFragment);
             }catch (NullPointerException e) {}
         }
     }
