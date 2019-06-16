@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.example.bakingapp.R;
 import com.example.bakingapp.models.Step;
@@ -23,8 +24,15 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.upstream.BandwidthMeter;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -46,7 +54,9 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
     @BindView(R.id.current_step_text) TextView currentStepTextView;
     @BindView(R.id.back_button) FloatingActionButton backButton;
     @BindView(R.id.forward_button) FloatingActionButton forwardButton;
-    @BindView(R.id.exoplayer) SimpleExoPlayerView exoPlayer;
+    @BindView(R.id.exoplayer) PlayerView exoPlayer;
+    //Deprecated
+    //@BindView(R.id.exoplayer) SimpleExoPlayerView exoPlayer;
     @BindView(R.id.detail_fragment_missing_text) TextView missingTextView;
     @BindView(R.id.fragment_linearlayout) LinearLayout linearLayout;
     @BindView(R.id.media_framelayout) FrameLayout mediaFrameLayout;
@@ -54,12 +64,13 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
     @BindView(R.id.missing_image) ImageView missingImage;
 
     private List<Step> stepList;
+
     private SimpleExoPlayer mediaPlayer;
     private boolean isTablet;
 
-    int currentIndex;
-    int width;
-    int height;
+    private int currentIndex;
+    private int width;
+    private int height;
 
     @Nullable
     @Override
@@ -117,7 +128,7 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
             return;
         }
 
-//        hideSystemUi();
+        hideSystemUi();
         if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             mediaFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(width, height));
             textFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(width, height));
@@ -227,13 +238,15 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
         releasePlayer();
         if(stepList.get(currentIndex).getVideoURL().isEmpty() && stepList.get(currentIndex).getThumbnailURL().isEmpty()) {
 
-            exoPlayer.setVisibility(View.GONE);
+            //No setVisibility
+            //exoPlayer.setVisibility(View.GONE);
             missingImage.setVisibility(View.GONE);
             missingTextView.setVisibility(View.VISIBLE);
         } else if(!stepList.get(currentIndex).getVideoURL().isEmpty()) {
 
             String videoUrl = stepList.get(currentIndex).getVideoURL();
-            exoPlayer.setVisibility(View.VISIBLE);
+            //No setVisibility
+            //exoPlayer.setVisibility(View.VISIBLE);
             missingImage.setVisibility(View.GONE);
             missingTextView.setVisibility(View.GONE);
             initializePlayer(Uri.parse(videoUrl));
@@ -241,7 +254,8 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
 
             String imageUrl = stepList.get(currentIndex).getThumbnailURL();
             missingTextView.setVisibility(View.GONE);
-            exoPlayer.setVisibility(View.GONE);
+            //No setVisibility
+            //exoPlayer.setVisibility(View.GONE);
             missingImage.setVisibility(View.VISIBLE);
 
             Picasso.get()
@@ -257,15 +271,31 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
 
     private void initializePlayer(Uri uri) {
 //TODO reimplement player
-        DefaultRenderersFactory drf = new DefaultRenderersFactory(getActivity());
-        DefaultTrackSelector dts = new DefaultTrackSelector();
-        DefaultLoadControl dlc = new DefaultLoadControl();
+//        DefaultRenderersFactory drf = new DefaultRenderersFactory(getActivity());
+//        DefaultTrackSelector dts = new DefaultTrackSelector();
+//        DefaultLoadControl dlc = new DefaultLoadControl();
+
+        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getActivity(), Util.getUserAgent(getActivity(), "BakingApp"));
+
+
 
         if(mediaPlayer == null) {
-            mediaPlayer = ExoPlayerFactory.newSimpleInstance(drf, dts, dlc);
-            exoPlayer.setPlayer(mediaPlayer);               mediaPlayer.setPlayWhenReady(true);
+            //mediaPlayer = ExoPlayerFactory.newSimpleInstance(drf, dts, dlc);
+
+            //Instantiate the player
+            mediaPlayer = ExoPlayerFactory.newSimpleInstance(getActivity());
+            //Attach player to the view
+            exoPlayer.setPlayer(mediaPlayer);
+
+            mediaPlayer.setPlayWhenReady(true);
+
             MediaSource mediaSource = buildMediaSource(uri);
+            //OR
+            //MediaSource videoSource = new ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(uri);
+            //Prepare the player with the dash media source
             mediaPlayer.prepare(mediaSource, true, false);
+            //OR
+            //mediaPlayer.prepare(videoSource, true, false);
         }
     }
 
