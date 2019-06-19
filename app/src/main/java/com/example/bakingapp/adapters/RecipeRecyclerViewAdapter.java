@@ -38,7 +38,7 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
 //        public TextView recipeName;
         @BindView(R.id.recipe_list_item_image) ImageView recipeImage;
         @BindView(R.id.recipe_list_item_name) TextView recipeText;
-        @BindView(R.id.recipe_servings_text) TextView servingsText;
+        @BindView(R.id.recipe_servings_value) TextView servingsText;
         @BindView(R.id.recipe_steps_value) TextView stepsText;
         @BindView(R.id.recipe_parent_layout)
         RelativeLayout parentLayout;
