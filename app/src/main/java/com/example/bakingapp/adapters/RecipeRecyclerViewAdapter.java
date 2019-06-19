@@ -1,6 +1,10 @@
 package com.example.bakingapp.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,11 +12,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.bakingapp.R;
+import com.example.bakingapp.activities.RecipeDetailActivity;
 import com.example.bakingapp.models.Recipe;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -23,6 +30,7 @@ import butterknife.ButterKnife;
 public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecyclerViewAdapter.RecipeViewHolder> {
 
     private static final String TAG = "RecipeAdapter";
+    private static final int RECIPE_REQUEST = 1;
     private Context context;
     private List<Recipe> recipeData;
 
@@ -87,6 +95,26 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
                     .error(R.drawable.default_recipe_image2)
                     .into(holder.recipeImage);
         }
+
+        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                String itemClicked = recipeData.get(position).getName();
+                Toast.makeText(context, "You clicked: " + itemClicked, Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(context, RecipeDetailActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("steps", (ArrayList<? extends Parcelable>) recipeData.get(position).getSteps());
+                bundle.putParcelableArrayList("ingredients", (ArrayList<? extends Parcelable>) recipeData.get(position).getIngredients());
+                bundle.putString("recipe_name", recipeData.get(position).getName());
+
+                intent.putExtra("bundle", bundle);
+
+                ((Activity) context).startActivityForResult(intent, RECIPE_REQUEST);
+            }
+        });
 
     }
 
