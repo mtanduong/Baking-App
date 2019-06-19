@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
                     noServer.setVisibility(View.VISIBLE);
                     return;
                 }
-                Log.d(TAG, "pre parseRecipes");
+                Log.d(TAG, "pre parseRecipes response.body().size: " + response.body().size());
 
                 progressBar.setVisibility(View.VISIBLE);
                 errorText.setVisibility(View.GONE);

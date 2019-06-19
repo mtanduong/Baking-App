@@ -1,6 +1,7 @@
 package com.example.bakingapp.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
     private static final String TAG = "RecipeAdapter";
     private Context context;
     private List<Recipe> recipeData;
+
 
     public RecipeRecyclerViewAdapter(Context context, List<Recipe> recipeData) {
         this.context = context;
@@ -71,11 +73,21 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
         holder.stepsText.setText(String.valueOf(currentRecipe.getSteps().size()));
         holder.servingsText.setText(String.valueOf(currentRecipe.getServings()));
 
-        Picasso.get()
-                .load(currentRecipe.getImage())
-                .placeholder(R.drawable.default_recipe_image2)
-                .error(R.drawable.default_recipe_image2)
-                .into(holder.recipeImage);
+        Log.d(TAG, "onBindViewHolder/getImage(): " + recipeData.get(position).getImage());
+
+        if(recipeData.get(position).getImage().isEmpty()) {
+            Picasso.get()
+                    .load(R.drawable.default_recipe_image2)
+                    .into(holder.recipeImage);
+        } else{
+            Picasso.get()
+//                .load(currentRecipe.getImage())
+                    .load(recipeData.get(position).getImage())
+                    .placeholder(R.drawable.default_recipe_image2)
+                    .error(R.drawable.default_recipe_image2)
+                    .into(holder.recipeImage);
+        }
+
     }
 
     @Override
