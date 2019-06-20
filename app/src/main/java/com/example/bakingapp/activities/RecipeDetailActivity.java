@@ -41,7 +41,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             //Related to Widget
-            //recipeMasterFragment = new StepFragment();
+            recipeMasterFragment = new RecipeMasterFragment();
             //recipeMasterFragment.setFragmentListener(this);
             recipeMasterFragment.setArguments(extras);
             recipeMasterFragment.getFragmentManager().beginTransaction().add(R.id.master_fragment_holder, recipeMasterFragment).commit();
@@ -136,4 +136,5 @@ public class RecipeDetailActivity extends AppCompatActivity {
             isTablet = false;
         }
     }
+
 }
