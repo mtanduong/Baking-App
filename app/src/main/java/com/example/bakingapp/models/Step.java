@@ -87,6 +87,7 @@ public class Step implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
+        dest.writeString(shortDescription);
         dest.writeString(description);
         dest.writeString(videoURL);
         dest.writeString(thumbnailURL);
