@@ -14,6 +14,8 @@ import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 
 public class RecipeDetailActivity extends AppCompatActivity {
     FrameLayout detailFragment;
@@ -22,8 +24,8 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
     String name;
 
-    Fragment recipeDetailFragment;
-    Fragment recipeMasterFragment;
+    RecipeDetailFragment recipeDetailFragment;
+    RecipeMasterFragment recipeMasterFragment;
 
 
     @Override
@@ -40,11 +42,15 @@ public class RecipeDetailActivity extends AppCompatActivity {
         extras.putBoolean("tablet", (detailFragment != null));
 
         if (savedInstanceState == null) {
-            //Related to Widget
+
             recipeMasterFragment = new RecipeMasterFragment();
+            //Related to Widget
             //recipeMasterFragment.setFragmentListener(this);
+            FragmentManager fragmentManager = getSupportFragmentManager();
             recipeMasterFragment.setArguments(extras);
-            recipeMasterFragment.getFragmentManager().beginTransaction().add(R.id.master_fragment_holder, recipeMasterFragment).commit();
+            fragmentManager.beginTransaction().add(R.id.master_fragment_holder, recipeMasterFragment).commit();
+            //recipeMasterFragment.setArguments(extras);
+            //recipeMasterFragment.getFragmentManager().beginTransaction().add(R.id.master_fragment_holder, recipeMasterFragment).commit();
 
             //checking if screen size greater than 600dp
             if (detailFragment == null) {
