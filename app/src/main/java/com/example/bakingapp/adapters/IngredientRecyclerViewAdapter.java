@@ -67,7 +67,7 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
         Ingredient currentIngredient = ingredientData.get(position);
 
         holder.measureText.setText(currentIngredient.getMeasure());
-        holder.quantityText.setText((int) currentIngredient.getQuantity());
+        holder.quantityText.setText(String.valueOf(currentIngredient.getQuantity()));
         holder.ingredientText.setText(currentIngredient.getIngredient());
     }
 
