@@ -1,44 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/ingredient_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:textSize="25sp"
-        android:text="@string/Ingredients"
-        android:textStyle="bold"
-        />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:orientation="vertical"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/ingredient_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:itemCount="5"
-        tools:listitem="@layout/ingredient_list_item"
-        />
+<TextView
+    android:id="@+id/ingredient_textview"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:textSize="25sp"
+    android:text="@string/Ingredients"
+    android:textStyle="bold" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:textSize="25sp"
-        android:text="@string/Steps"
-        android:textStyle="bold"
-        />
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/ingredient_recyclerview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/ingredient_textview"
+    tools:itemCount="5"
+    tools:listitem="@layout/ingredient_list_item" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/step_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:itemCount="5"
-        tools:listitem="@layout/step_list_item"
-        />
+<TextView
+    android:id="@+id/step_textview"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/ingredient_recyclerview"
+    android:padding="5dp"
+    android:textSize="25sp"
+    android:text="@string/Steps"
+    android:textStyle="bold" />
+
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/step_recyclerview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/step_textview"
+    tools:itemCount="5"
+    tools:listitem="@layout/step_list_item" />
 
 </LinearLayout>
+</androidx.core.widget.NestedScrollView>
