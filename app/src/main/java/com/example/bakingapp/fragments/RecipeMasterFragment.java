@@ -2,6 +2,7 @@ package com.example.bakingapp.fragments;
 
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -66,23 +67,32 @@ public class RecipeMasterFragment extends Fragment {
             index = savedInstanceState.getInt("index");
         }
 
+        Log.d(TAG, "stepRecylcer pre stepList size call");
         tracker = new int[stepList.size()];
+        Log.d(TAG, "Post stepRecycler post size call, size is: " + stepList.size());
 
         if(isTablet) {
             tracker[index] = 1;
         }
 
+        Log.d(TAG, "Pre set Ingredient adapter");
         IngredientRecyclerViewAdapter ingredientAdapter = new IngredientRecyclerViewAdapter(getActivity(), ingredientList);
         ingredientRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         ingredientRecyclerView.setAdapter(ingredientAdapter);
+        Log.d(TAG, "Post set Ingredient adapter");
 
         if(ingredientViewPos != 0) {
             ingredientRecyclerView.getLayoutManager().scrollToPosition(ingredientViewPos);
         }
 
+        Log.d(TAG, "Pre set Step adapter");
         StepRecyclerViewAdapter stepAdapter = new StepRecyclerViewAdapter(getActivity(), stepList, tracker);
         stepRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         stepRecyclerView.setAdapter(stepAdapter);
+        Log.d(TAG, "Post set Step adapter");
+
+
 
         if(stepViewPos != 0) {
             stepRecyclerView.getLayoutManager().scrollToPosition(stepViewPos);

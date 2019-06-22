@@ -25,7 +25,7 @@ public class StepRecyclerViewAdapter extends RecyclerView.Adapter<StepRecyclerVi
     private List<Step> stepData;
     private int[] tracker;
 
-    public StepRecyclerViewAdapter(Context context, List<Step> setpData, int[] tracker) {
+    public StepRecyclerViewAdapter(Context context, List<Step> stepData, int[] tracker) {
         this.context = context;
         this.stepData = stepData;
         this.tracker = tracker;
