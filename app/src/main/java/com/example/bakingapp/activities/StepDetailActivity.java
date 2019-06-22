@@ -8,10 +8,11 @@ import com.example.bakingapp.fragments.RecipeDetailFragment;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 
 public class StepDetailActivity extends AppCompatActivity {
 
-    Fragment detailsFragment;
+    RecipeDetailFragment detailsFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,9 +29,13 @@ public class StepDetailActivity extends AppCompatActivity {
             bundle.putBoolean("tablet",false);
 
             detailsFragment = new RecipeDetailFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
             detailsFragment.setArguments(bundle);
+            fragmentManager.beginTransaction().add(R.id.activity_step_detail_framelayout, detailsFragment).commit();
 
-            detailsFragment.getFragmentManager().beginTransaction().add(R.id.activity_step_detail_framelayout, detailsFragment).commit();
+            //detailsFragment.getFragmentManager().beginTransaction().add(R.id.activity_step_detail_framelayout, detailsFragment).commit();
+
+
             //Deprecated
 //            getFragmentManager().beginTransaction()
 //                    .add(R.id.activity_step_detail_framelayout, detailsFragment)
