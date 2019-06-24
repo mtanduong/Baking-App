@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.example.bakingapp.R;
 import com.example.bakingapp.adapters.IngredientRecyclerViewAdapter;
@@ -53,7 +54,7 @@ public class RecipeMasterFragment extends Fragment {
             Bundle extra = getArguments();
             ingredientList = extra.getParcelableArrayList("ingredients");
             stepList = extra.getParcelableArrayList("steps");
-            isTablet = extra.getBoolean("tablet");
+            isTablet = extra.getBoolean("tablet", false);
             ingredientViewPos = extra.getInt("ingredientViewPos");
             stepViewPos = extra.getInt("stepViewPos");
             index = 0;
@@ -102,18 +103,22 @@ public class RecipeMasterFragment extends Fragment {
         stepRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
             public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                Toast.makeText(getActivity(), "RecipeMasterFragment/addOnItemTouchListener/onInterceptTouchEvent: " + index, Toast.LENGTH_SHORT).show();
+                updateView(0);
                 return false;
             }
 
             @Override
             public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
 
+                Toast.makeText(getActivity(), "onTouchEvent clicked", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
             }
+
         });
 
         if(isTablet) {
@@ -127,6 +132,7 @@ public class RecipeMasterFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
 
+        Log.d(TAG, "onSaveInstanceState");
         super.onSaveInstanceState(outState);
 
         outState.putParcelableArrayList("ingredients", (ArrayList<? extends Parcelable>) ingredientList);
@@ -135,5 +141,25 @@ public class RecipeMasterFragment extends Fragment {
         outState.putInt("ingredientViewPos", ((LinearLayoutManager)ingredientRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition());
         outState.putInt("stepViewPos", ((LinearLayoutManager)stepRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition());
         outState.putInt("index", index);
+    }
+
+    public void updateView(int index)
+    {
+        Log.d(TAG, "updateView: isTablet " + isTablet);
+        this.index = index;
+        if(!isTablet)
+        {
+            Log.d(TAG, "updateView isTablet is false: returning");
+            return;
+        }
+        tracker = new int[stepList.size()];
+        try{
+            tracker[index]=1;
+            ((StepRecyclerViewAdapter)stepRecyclerView.getAdapter()).tracker = tracker;
+            stepRecyclerView.getAdapter().notifyDataSetChanged();
+            stepRecyclerView.scrollToPosition(index);
+        }catch (ArrayIndexOutOfBoundsException E) {
+
+        }
     }
 }
