@@ -1,6 +1,7 @@
 package com.example.bakingapp.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.bakingapp.R;
 import com.example.bakingapp.fragments.RecipeDetailFragment;
@@ -12,7 +13,9 @@ import androidx.fragment.app.FragmentManager;
 
 public class StepDetailActivity extends AppCompatActivity {
 
+    private static final String TAG = "StepDetailActivity";
     RecipeDetailFragment detailsFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +49,7 @@ public class StepDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        Log.d(TAG, "onSaveInstanceState");
         detailsFragment.getFragmentManager().putFragment(outState, "fragment", detailsFragment);
         //Deprecated
 //        getFragmentManager().putFragment(outState,"fragment",detailsFragment);
@@ -54,6 +58,7 @@ public class StepDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        Log.d(TAG, "onRestoreInstanceState");
         super.onRestoreInstanceState(savedInstanceState);
         detailsFragment.getFragmentManager().getFragment(savedInstanceState, "fragment");
         //Deprecated

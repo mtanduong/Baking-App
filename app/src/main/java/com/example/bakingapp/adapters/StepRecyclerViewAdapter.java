@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.bakingapp.R;
 import com.example.bakingapp.models.Step;
@@ -23,7 +24,7 @@ public class StepRecyclerViewAdapter extends RecyclerView.Adapter<StepRecyclerVi
     private static final String TAG = "StepAdapter";
     private Context context;
     private List<Step> stepData;
-    private int[] tracker;
+    public int[] tracker;
 
     public StepRecyclerViewAdapter(Context context, List<Step> stepData, int[] tracker) {
         this.context = context;
@@ -72,6 +73,14 @@ public class StepRecyclerViewAdapter extends RecyclerView.Adapter<StepRecyclerVi
             holder.parentLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
             holder.stepText.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
         }
+
+        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "StepRecyclerView onBindViewHolder/setOnClickListener: " + position + " " + stepData.get(position).getShortDescription(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
