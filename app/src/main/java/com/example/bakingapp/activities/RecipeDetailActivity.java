@@ -2,6 +2,8 @@ package com.example.bakingapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
 import android.widget.FrameLayout;
 
 import com.example.bakingapp.R;
@@ -18,6 +20,8 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 public class RecipeDetailActivity extends AppCompatActivity {
+
+    private static final String TAG = "RecipeDetailActivity";
     FrameLayout detailFragment;
     boolean isTablet;
     private List<Step> steps;
@@ -33,7 +37,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
 
-        detailFragment = (FrameLayout) findViewById(R.id.detail_fragment_holder);
+        detailFragment = findViewById(R.id.detail_fragment_holder);
         isTablet = true;
         Bundle extras = getIntent().getBundleExtra("bundle");
         name = extras.getString("recipe_name");
@@ -57,10 +61,11 @@ public class RecipeDetailActivity extends AppCompatActivity {
                 isTablet = false;
             } else {
                 //Related to Widget
-                //this.setStep(0, steps);
+                this.setStep(0, steps);
             }
         } else {
             recipeMasterFragment.getFragmentManager().getFragment(savedInstanceState, "main");
+
             //Deprecated
 //            recipeMasterFragment = (RecipeMasterFragment) getFragmentManager().getFragment(savedInstanceState,"main");
             //Related to Widget
@@ -120,6 +125,8 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+
+        Log.d(TAG, "onSaveInstanceState");
         super.onSaveInstanceState(outState);
         recipeMasterFragment.getFragmentManager().putFragment(outState, "main", recipeMasterFragment);
         //Deprecated
@@ -137,9 +144,41 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+
+        Log.d(TAG, "onResume");
         super.onResume();
         if (detailFragment == null) {
             isTablet = false;
+        }
+    }
+
+    public void setCurrent(int index) {
+        if(isTablet) {
+            recipeMasterFragment.updateView(index);
+        }
+    }
+
+    public void setStep(int index, List<Step> stepList) {
+        if(isTablet) {
+            Intent intent = new Intent(this, StepDetailActivity.class);
+            intent.putExtra("steps", (ArrayList<? extends Parcelable>) stepList);
+            intent.putExtra("currentIndex", index);
+            intent.putExtra("name", name);
+            startActivity(intent);
+        } else {
+            recipeDetailFragment = new RecipeDetailFragment();
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList("steps", (ArrayList<? extends Parcelable>) stepList);
+            //Widget
+            //recipeDetailFragment.setFragmentListener(this);
+            bundle.putInt("currentIndex", index);
+            bundle.putBoolean("tablet", true);
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+
+            recipeDetailFragment.setArguments(bundle);
+            //getFragmentManager().beginTransaction().replace(R.id.detail_fragment_holder, recipeDetailFragment).commit();
+            fragmentManager.beginTransaction().add(R.id.detail_fragment_holder, recipeDetailFragment).commit();
         }
     }
 
