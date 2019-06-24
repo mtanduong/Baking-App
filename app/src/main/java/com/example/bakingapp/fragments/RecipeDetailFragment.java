@@ -90,7 +90,7 @@ public class RecipeDetailFragment extends Fragment implements View.OnClickListen
 
             stepList = savedInstanceState.getParcelableArrayList("steps");
             isTablet = savedInstanceState.getBoolean("tablet", false);
-            currentIndex = savedInstanceState.getInt("currentIndex");
+            currentIndex = savedInstanceState.getInt("index");
         }
 
         show();
