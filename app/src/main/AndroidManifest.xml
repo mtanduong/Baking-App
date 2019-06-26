@@ -21,16 +21,31 @@
         </activity>
 
         <activity
-            android:name=".activities.RecipeDetailActivity"
-            android:launchMode="singleTask"
-            android:parentActivityName=".activities.MainActivity" />
-
+            android:name=".activities.RecipeActivity"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity"/>
+        </activity>
         <activity
-            android:name=".activities.StepDetailActivity"
-            android:launchMode="singleTask"
-            android:parentActivityName=".activities.RecipeDetailActivity" />
-
-
+            android:name=".activities.IngredientsActivity"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.RecipeActivity" />
+        </activity>
+        <receiver android:name=".widgets.BakingAppProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.AppWidgetProvider"
+                android:resource="@xml/baking_app_provider_info" />
+        </receiver>
+        <service
+            android:name=".widgets.listViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+        <service android:name=".widgets.WidgetUpdateService" />
     </application>
 
 </manifest>

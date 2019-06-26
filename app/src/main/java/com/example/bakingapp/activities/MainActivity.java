@@ -1,211 +1,237 @@
 package com.example.bakingapp.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
-import android.content.Intent;
+import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
+import com.example.bakingapp.IdlingResource.MyIdlingResource;
 import com.example.bakingapp.R;
-import com.example.bakingapp.adapters.RecipeRecyclerViewAdapter;
+import com.example.bakingapp.adapters.RecipeAdapter;
 import com.example.bakingapp.models.Recipe;
 import com.example.bakingapp.utils.BakingApi;
 import com.example.bakingapp.utils.BakingService;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.view.View.GONE;
-
-public class MainActivity extends AppCompatActivity {
-
-    private static final String TAG = "MainActivity";
-
-    @BindView(R.id.main_recyclerview) RecyclerView recyclerView;
-    @BindView(R.id.progress_bar) ProgressBar progressBar;
-    @BindView(R.id.reload_button) Button reloadButton;
-    @BindView(R.id.no_network_iv) ImageView noConnection;
-    @BindView(R.id.no_server_iv) ImageView noServer;
-    @BindView(R.id.error_text) TextView errorText;
-
+public class MainActivity extends AppCompatActivity
+{
+    private final String TAG = getClass().getSimpleName();
+    private ArrayList<Recipe> mRecipes;
+    private Recipe[] mRecipesArr;
+    private RecyclerView mRecyclerView;
+    private boolean tabletFlag = false;
+    private static final String KEY_RECIPES = "recipes";
+    public static final String BUNDLE = "bundle";
+    public static final String INGREDIENTS = "ingredients";
+    LinearLayoutManager mLinearLayoutManager = null;
+    GridLayoutManager mGridlayoutManager = null;
     private BakingService retrofitService = BakingApi.createService();
-    private List<Recipe> recipeList;
-    private int index;
 
-    //private CountingIdlingResource mIdlingResource = new CountingIdlingResource("Loading_Data");
+    @Nullable
+    private MyIdlingResource mIdlingResource;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        ButterKnife.bind(this);
-
-        noConnection.setVisibility(View.GONE);
-        noServer.setVisibility(View.GONE);
-        errorText.setVisibility(View.GONE);
-        reloadButton.setVisibility(View.GONE);
-
-        reloadButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Reload Button: Clicked");
-                //TODO call API to retrieve recipe list
-            }
-        });
-
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-
-        if(savedInstanceState == null) {
-            //mIdlingResource.increment();
-            //TODO call API to retrieve recipe list
-        }
-
-        Call<List<Recipe>> callRecipe = retrofitService.getRecipes();
-
-        callApi(callRecipe);
-        /*
-        recyclerView.addOnItemTouchListener(new RecyclerViewItemClickListener(MainActivity.this, recyclerView, new RecyclerViewItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Intent details=new Intent(HomeActivity.this,RecipeDetailsActivity.class);
-
-                Bundle bundle=new Bundle();
-                bundle.putParcelableArrayList("steps",
-                        (ArrayList<? extends Parcelable>) recipes.get(position).getSteps());
-                bundle.putParcelableArrayList("ingredients",
-                        (ArrayList<? extends Parcelable>) recipes.get(position).getIngredients());
-                bundle.putString("recipe_name",recipes.get(position).getName());
-                details.putExtra("bundle",bundle);
-
-                startActivity(details);
-
-            }
-            @Override
-            public void onLongItemClick(View view, int position) {
-
-            }
-        }));
-        */
-
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-
-        outState.putParcelableArrayList("recipes",(ArrayList<? extends Parcelable>) recipeList);
-        if(recyclerView.getTag().equals("tablet"))
-        {
-            outState.putInt("index",((GridLayoutManager)recyclerView.getLayoutManager())
-                    .findFirstCompletelyVisibleItemPosition());
-        }
-        else
-        {
-            outState.putInt("index",((LinearLayoutManager)recyclerView.getLayoutManager())
-                    .findFirstCompletelyVisibleItemPosition());
-        }
-
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        recipeList = savedInstanceState.getParcelableArrayList("recipes");
-        index = savedInstanceState.getInt("index");
-        startRecyclerView(recipeList);
-        progressBar.setVisibility(GONE);
-    }
-
-    private void callApi(Call<List<Recipe>> call) {
-
-        Log.d(TAG, "called callApi");
-        progressBar.setVisibility(View.VISIBLE);
-        call.enqueue(new Callback<List<Recipe>>() {
-            @Override
-            public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
-                if(!response.isSuccessful()) {
-                    Log.d(TAG, "callApi server error: " + response.code());
-                    errorText.setVisibility(View.VISIBLE);
-                    errorText.setText(R.string.server_error);
-                    progressBar.setVisibility(View.GONE);
-                    noServer.setVisibility(View.VISIBLE);
-                    return;
-                }
-                Log.d(TAG, "pre parseRecipes response.body().size: " + response.body().size());
-
-                progressBar.setVisibility(View.VISIBLE);
-                errorText.setVisibility(View.GONE);
-                noConnection.setVisibility(View.GONE);
-                noServer.setVisibility(View.GONE);
-                reloadButton.setVisibility(View.GONE);
-
-                startRecyclerView(response.body());
-
-                progressBar.setVisibility(View.GONE);
-                Log.d(TAG, "post parseRecipes");
-
-            }
-
-            @Override
-            public void onFailure(Call<List<Recipe>> call, Throwable t) {
-                Log.d(TAG, "callApi oncall error: " + t.getMessage());
-
-                errorText.setText("");
-                errorText.setVisibility(View.VISIBLE);
-                reloadButton.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
-
-                if(t instanceof IOException) {
-                    errorText.setText(R.string.network_error);
-                    noConnection.setVisibility(View.VISIBLE);
-                } else {
-                    errorText.setText(R.string.parse_error);
-                }
-            }
-        });
-    }
-
-    private void startRecyclerView(List<Recipe> recipeList) {
-        if(recyclerView.getTag().equals("tablet"))
-        {
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
-            recyclerView.setLayoutManager(gridLayoutManager);
-        }
-        else
-        {
-            LinearLayoutManager gridLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL,false);
-            recyclerView.setLayoutManager(gridLayoutManager);
-        }
-        recyclerView.setAdapter(new RecipeRecyclerViewAdapter(this, recipeList));
-        recyclerView.getLayoutManager().scrollToPosition(index);
-    }
-
+    /**
+     * Only called from test, creates and returns a new {@link MyIdlingResource}.
+     */
     /*
-    private void reload(View view) {
-        progressBar.setVisibility(View.VISIBLE);
-        reloadButton.setVisibility(View.GONE);
-        //Call Api
-        BakingApi.createService();
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource()
+    {
+        if (mIdlingResource == null)
+        {
+            mIdlingResource = new MyIdlingResource();
+        }
+        return mIdlingResource;
     }
     */
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        //getIdlingResource();
+
+        if (savedInstanceState == null)
+        {
+            if (mIdlingResource != null)
+            {
+                mIdlingResource.setIdleState(false);
+            }
+            fetchData();
+        } else
+        {
+            Parcelable[] recipes = savedInstanceState.getParcelableArray(KEY_RECIPES);
+            if (recipes != null)
+            {
+                mRecipesArr = new Recipe[recipes.length];
+                for (int i = 0; i < recipes.length; i++)
+                {
+                    mRecipesArr[i] = (Recipe) recipes[i];
+                }
+            }
+            initializeScreen();
+        }
+    }
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+
+        //this is our test thread,it will wait 5 seconds after the onCreate finishes to
+        //ensure that the RecyclerView is fully capable of click handling.
+        if (mIdlingResource != null)
+        {
+            Handler handler = new Handler();
+            Runnable runnable = new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    long futureTime = System.currentTimeMillis() + 5000;
+                    while (System.currentTimeMillis() < futureTime)
+                    {
+                        synchronized (this)
+                        {
+                            try
+                            {
+                                wait(futureTime - System.currentTimeMillis());
+                                if (mIdlingResource != null)
+                                {
+                                    mIdlingResource.setIdleState(true);
+                                }
+
+                            } catch (InterruptedException e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    handler.sendEmptyMessage(0);
+                }
+            };
+            Thread testThread = new Thread(runnable);
+            testThread.start();
+        }
+    }
+
+    /**
+     * method will trigger a Json response via a Retrofit client
+     */
+    void fetchData()
+    {
+        /*
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BakingClient.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        BakingClient bakingClient = retrofit.create(BakingClient.class);
+        */
+
+        //Call<List<Recipe>> call = bakingClient.getRecipes();
+        Call<List<Recipe>> call = retrofitService.getRecipes();
+
+        call.enqueue(new Callback<List<Recipe>>()
+        {
+            @Override
+            public void onResponse(@NonNull Call<List<Recipe>> call, @NonNull Response<List<Recipe>> response)
+            {
+                mRecipes = (ArrayList<Recipe>) response.body();
+                if (mRecipes != null)
+                {
+                    mRecipesArr = mRecipes.toArray(new Recipe[mRecipes.size()]);
+                    mRecipes.clear();
+                    initializeScreen();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Recipe>> call, @NonNull Throwable t)
+            {
+                Log.e(MainActivity.this.getClass().getSimpleName(), "" + t.getMessage());
+            }
+        });
+
+    }
+
+    /**
+     * method will initialize the screen of the MainActivity
+     */
+    private void initializeScreen()
+    {
+        //mobile case
+        if (!isTablet(this))
+        {
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+                mLinearLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false);
+                //mLinearLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false);
+            else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+                mGridlayoutManager = new GridLayoutManager(MainActivity.this, 2);
+        }
+        //tablet case
+        else
+        {
+            tabletFlag = true;
+            mGridlayoutManager = new GridLayoutManager(MainActivity.this, 2);
+        }
+
+        mRecyclerView = findViewById(R.id.recyclerview_recipes);
+
+        if (!tabletFlag)
+        {
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+                mRecyclerView.setLayoutManager(mLinearLayoutManager);
+            else
+                mRecyclerView.setLayoutManager(mGridlayoutManager);
+        } else
+        {
+            mRecyclerView.setLayoutManager(mGridlayoutManager);
+        }
+
+
+        mRecyclerView.setHasFixedSize(true);
+        RecipeAdapter recipeAdapter = new RecipeAdapter(mRecipesArr);
+        mRecyclerView.setAdapter(recipeAdapter);
+    }
+
+    /**
+     * method will check if the device that the app runs on is a tablet or a mobile phone
+     *
+     * @param context app context
+     * @return true if it is a tablet,false otherwise
+     */
+    private boolean isTablet(Context context)
+    {
+        boolean xlarge = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == 4);
+        boolean large = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE);
+        return (xlarge || large);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelableArray(KEY_RECIPES, mRecipesArr);
+    }
 }

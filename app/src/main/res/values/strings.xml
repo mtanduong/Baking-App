@@ -1,27 +1,19 @@
 <resources>
     <string name="app_name">Baking App</string>
+    <string name="recipe_image">recipe image</string>
+    <string name="recipe_ingredients">ingredients</string>
+    <string name="recipe_steps">steps</string>
 
-    <!--Ingredient List-->
-    <string name="of">of</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="novideoimage">noVideoImage</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="no_recipe_to_display">no recipe to display</string>
+    <string name="ingredients_basket">ingredients basket</string>
+    <string name="left_navigation_arrow">left navigation arrow</string>
+    <string name="right_navigation_arrow">right navigation arrow</string>
 
-    <!--Master Fragment-->
-    <string name="Ingredients">Ingredients</string>
-    <string name="Steps">Steps</string>
-
-    <!--Detail Fragment-->
-    <string name="Missing">No media</string>
-
-    <!--Recipe RecyclerView-->
-    <string name="RecipeServings">Servings:</string>
-    <string name="RecipeSteps">Steps:</string>
-
-    <!--Error-->
-    <string name="retry">Retry</string>
-    <string name="no_connection_icon">No Connection Icon</string>
-    <string name="no_server_icon">No Server Icon</string>
-    <string name="network_error">Cannot connect to Internet. Please check your connection.</string>
-    <string name="server_error">The server could not be found. Please try again later.</string>
-    <string name="parse_error">Parsing error. Please try again later.</string>
-    <string name="no_connection">Cannot connect to Internet. Please check your connection.</string>
+    <string name="ingredients">Ingredients:</string>
+    <string name="steps">Steps:</string>
 
 </resources>
