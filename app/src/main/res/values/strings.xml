@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Baking App</string>
     <string name="recipe_image">recipe image</string>
-    <string name="recipe_ingredients">ingredients</string>
+    <string name="recipe_ingredients">Ingredients</string>
     <string name="recipe_steps">steps</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>

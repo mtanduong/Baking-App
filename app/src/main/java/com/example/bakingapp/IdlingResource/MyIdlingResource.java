@@ -5,12 +5,11 @@ package com.example.bakingapp.IdlingResource;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import androidx.test.espresso.IdlingResource;
+//import androidx.test.espresso.IdlingResource;
 
-
-public class MyIdlingResource implements IdlingResource
+public class MyIdlingResource //implements IdlingResource
 {
-
+/*
     //@Nullable
     private volatile IdlingResource.ResourceCallback mCallback;
 
@@ -36,14 +35,15 @@ public class MyIdlingResource implements IdlingResource
         this.mCallback=callback;
     }
 
-    /**
-     * Sets the new idle state, if isIdleNow is true, it pings the {@link ResourceCallback}.
-     * @param isIdleNow false if there are pending operations, true if idle.
-     */
+
+     //* Sets the new idle state, if isIdleNow is true, it pings the {@link ResourceCallback}.
+     //* @param isIdleNow false if there are pending operations, true if idle.
+
     public void setIdleState(boolean isIdleNow) {
         mIsIdleNow.set(isIdleNow);
         if (isIdleNow && mCallback != null) {
             mCallback.onTransitionToIdle();
         }
     }
+    */
 }

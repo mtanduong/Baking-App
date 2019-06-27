@@ -1,9 +1,10 @@
-
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-          android:id="@+id/mShortDescription"
-          android:layout_width="fill_parent"
-          android:layout_height="?android:attr/listPreferredItemHeight"
-          android:gravity="center"
-          android:paddingLeft="6dip"
-          android:paddingRight="6dip"
-          android:textSize="20sp"/>
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mShortDescription"
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:gravity="center"
+    android:paddingLeft="6dp"
+    android:paddingRight="6dp"
+    android:textSize="20sp"
+    tools:text="Recipe Introduction" />

@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity
         {
             if (mIdlingResource != null)
             {
-                mIdlingResource.setIdleState(false);
+                //mIdlingResource.setIdleState(false);
             }
             fetchData();
         } else
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity
                                 wait(futureTime - System.currentTimeMillis());
                                 if (mIdlingResource != null)
                                 {
-                                    mIdlingResource.setIdleState(true);
+                                    //mIdlingResource.setIdleState(true);
                                 }
 
                             } catch (InterruptedException e)

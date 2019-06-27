@@ -61,7 +61,7 @@
                     android:layout_marginTop="8dp"
                     android:adjustViewBounds="true"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/ic_ingredients"
+                    app:srcCompat="@drawable/ic_ingredient"
                     card_view:layout_constraintBottom_toBottomOf="parent"
                     card_view:layout_constraintStart_toStartOf="parent"
                     card_view:layout_constraintTop_toTopOf="parent"

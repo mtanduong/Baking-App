@@ -70,7 +70,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/descriptionScrollView"
-            app:srcCompat="@drawable/navigation_icon"
+            app:srcCompat="@drawable/ic_back"
             android:contentDescription="@string/left_navigation_arrow"/>
 
         <ImageView
@@ -80,12 +80,11 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:adjustViewBounds="true"
-            android:rotation="180"
             android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/descriptionScrollView"
-            app:srcCompat="@drawable/navigation_icon"
+            app:srcCompat="@drawable/ic_forward"
             android:contentDescription="@string/right_navigation_arrow"/>
 
 
