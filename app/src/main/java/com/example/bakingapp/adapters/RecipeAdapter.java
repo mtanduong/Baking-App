@@ -48,7 +48,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     public RecipeViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType)
     {
         Context context = viewGroup.getContext();
-        int layoutIdForListItem = R.layout.recepie_list_item;
+        int layoutIdForListItem = R.layout.recipe_list_item;
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(layoutIdForListItem, viewGroup, false);
         return new RecipeAdapter.RecipeViewHolder(view);
