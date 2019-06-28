@@ -22,7 +22,7 @@ public class IngredientsActivity extends AppCompatActivity
     private Ingredient[] mIngredients;
     private RecyclerView mRecyclerView;
     LinearLayoutManager mLinearLayoutManager = null;
-    static int ingredientsLengthForTest;
+    public static int ingredientsLengthForTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)

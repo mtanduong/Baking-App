@@ -48,6 +48,7 @@ public class RecipeActivity extends AppCompatActivity
     public static int mPosition;
     public static boolean backPressed = false;
     private DetailFragment detailFragment;
+    public static int stepLengthForTest;
 
     //flag that will indicate if we need to change the video rotation
     private boolean isDetailFragmentCreated;
@@ -139,6 +140,7 @@ public class RecipeActivity extends AppCompatActivity
             if (stepsParcel != null)
             {
                 mSteps = new Steps[stepsParcel.length];
+                stepLengthForTest = mSteps.length;
                 for (int i = 0; i < stepsParcel.length; i++)
                 {
                     mSteps[i] = (Steps) stepsParcel[i];
@@ -184,6 +186,7 @@ public class RecipeActivity extends AppCompatActivity
                 if (stepsParcelableArray != null)
                 {
                     mSteps = new Steps[stepsParcelableArray.length];
+                    stepLengthForTest = mSteps.length;
                     for (int i = 0; i < stepsParcelableArray.length; i++)
                     {
                         mSteps[i] = (Steps) stepsParcelableArray[i];
