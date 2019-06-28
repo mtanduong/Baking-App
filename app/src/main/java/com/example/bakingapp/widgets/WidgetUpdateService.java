@@ -13,7 +13,7 @@ import com.example.bakingapp.models.Ingredient;
 import androidx.annotation.Nullable;
 
 public class WidgetUpdateService extends IntentService {
-    public static final String WIDGET_UPDATE_ACTION = "rodionkonioshko.com.bakingapp.update_widget";
+    public static final String WIDGET_UPDATE_ACTION = "WIDGET_UPDATE";
     private Ingredient[]mIngredients;
 
     public WidgetUpdateService()

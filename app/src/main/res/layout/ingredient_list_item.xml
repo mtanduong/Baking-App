@@ -23,10 +23,10 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="baking powder" />
+        tools:text="Graham Cracker crumbs" />
 
     <TextView
-        android:id="@+id/quantityAndMeasure"
+        android:id="@+id/quantity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -39,7 +39,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ingredient"
-        tools:text="1 TSP" />
+        tools:text="2.0 CUP" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
