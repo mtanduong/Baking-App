@@ -18,9 +18,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            >
-        </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
+            app:layout_constraintTop_toTopOf="parent"></com.google.android.exoplayer2.ui.SimpleExoPlayerView>
 
         <ScrollView
             android:id="@+id/descriptionScrollView"
@@ -38,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display1"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
         </ScrollView>
 
         <ImageView
@@ -46,11 +44,11 @@
             android:layout_width="0dp"
             android:layout_height="200dp"
             android:layout_margin="4dp"
-            android:contentDescription="@string/novideoimage"
+            android:contentDescription="@string/no_video"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/descriptionScrollView"/>
+            app:layout_constraintTop_toBottomOf="@id/descriptionScrollView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

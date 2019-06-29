@@ -64,13 +64,11 @@
                     app:srcCompat="@drawable/ic_ingredient"
                     card_view:layout_constraintBottom_toBottomOf="parent"
                     card_view:layout_constraintStart_toStartOf="parent"
-                    card_view:layout_constraintTop_toTopOf="parent"
-                    android:contentDescription="@string/ingredients_basket"/>
+                    card_view:layout_constraintTop_toTopOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout >
         </androidx.cardview.widget.CardView>
 
-        <!--&lt;!&ndash;fragment frame&ndash;&gt;-->
         <FrameLayout
             android:id="@+id/testframe"
             android:layout_width="400dp"
