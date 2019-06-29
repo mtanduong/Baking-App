@@ -1,19 +1,30 @@
 <resources>
     <string name="app_name">Baking App</string>
-    <string name="recipe_image">recipe image</string>
-    <string name="recipe_ingredients">Ingredients</string>
     <string name="recipe_steps">steps</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="novideoimage">noVideoImage</string>
-    <string name="appwidget_text">EXAMPLE</string>
+    <!-- Widget -->
     <string name="add_widget">Add widget</string>
-    <string name="no_recipe_to_display">no recipe to display</string>
-    <string name="ingredients_basket">ingredients basket</string>
-    <string name="left_navigation_arrow">left navigation arrow</string>
-    <string name="right_navigation_arrow">right navigation arrow</string>
 
+    <!-- Master Fragment-->
+    <string name="recipe_ingredients">Ingredients</string>
+
+    <!-- Detail Fragment -->
+    <string name="back_arrow">Back Button</string>
+    <string name="forward_arrow">Forward Button</string>
+
+    <!-- Recipe Recycler View -->
+    <string name="recipe_image">recipe image</string>
     <string name="ingredients">Ingredients:</string>
     <string name="steps">Steps:</string>
+
+    <!-- Error -->
+    <string name="network_error">Cannot connect to Internet. Please check your connection.</string>
+    <string name="server_error">The server could not be found. Please try again.</string>
+    <string name="retry">Retry</string>
+    <string name="no_recipe">No recipe to display</string>
+    <string name="no_video">No media to display</string>
+    <string name="parse_error">Parsing error. Please try again after some time.</string>
+    <!--<string name="hello_blank_fragment">Hello blank fragment</string>-->
+    <!--<string name="appwidget_text">EXAMPLE</string>-->
 
 </resources>
