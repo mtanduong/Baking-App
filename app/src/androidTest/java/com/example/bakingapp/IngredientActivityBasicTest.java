@@ -32,13 +32,12 @@ public class IngredientActivityBasicTest {
         Random rand = new Random();
         randPosition = rand.nextInt(3);
     }
-    /**
-     * This test will check if we can access the IngredientsActivity and we can scroll all the way down,meaning all items were handled correctly in Recycler.
-     */
+
+    //Test to see if we can access IngredientsActivity and scroll down to ensure all recycler list items are present
     @Test
     public void ingredientsActivityBasicTest()
     {
-        //mainActivityBasicTest();
+
         onView(withId(R.id.recyclerview_recipes)).perform(RecyclerViewActions.actionOnItemAtPosition(randPosition, click()));
         onView(withId(R.id.ingredientsTextView)).perform(click());
         onView(withId(R.id.recyclerview_ingredients)).perform

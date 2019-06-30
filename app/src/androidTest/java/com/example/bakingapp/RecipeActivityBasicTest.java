@@ -29,14 +29,12 @@ public class RecipeActivityBasicTest {
         Random rand = new Random();
         randPosition = rand.nextInt(3);
     }
-    /**
-     * This test will check if we can access the RecipeActivity and we can scroll all the way down, meaning all items were handled correctly in Recycler.
-     */
+
+    //Test to see if we can access RecipeActivity and randomly clicks on a possible recipe recycler list item
     @Test
-    public void ingredientsActivityBasicTest()
+    public void recipeActivityBasicTest()
     {
         onView(withId(R.id.recyclerview_recipes)).perform(RecyclerViewActions.actionOnItemAtPosition(randPosition, click()));
-        //onView(withId(R.id.ingredientsTextView)).perform(click());
         onView(withId(R.id.list_view_master)).perform
                 (RecyclerViewActions.actionOnItemAtPosition(RecipeActivity.stepLengthForTest - 1, scrollTo()));
     }

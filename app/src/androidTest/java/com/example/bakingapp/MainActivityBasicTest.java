@@ -26,10 +26,8 @@ public class MainActivityBasicTest {
         Random rand = new Random();
         randPosition = rand.nextInt(3);
     }
-    /**
-     * This test will check if we retrieved the network data and the image Recycler at a random possible position is clickable
-     */
 
+    //Test to see if we can access MainActivity and randomly clicks on a possible recipe recycler list item
     @Test
     public void mainActivityBasicTest()
     {
