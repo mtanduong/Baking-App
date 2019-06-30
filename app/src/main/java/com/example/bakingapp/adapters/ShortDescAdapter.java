@@ -30,7 +30,6 @@ public class ShortDescAdapter extends RecyclerView.Adapter<ShortDescAdapter.View
         this.mSteps = mSteps;
     }
 
-
     @Override
     public ShortDescAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType)
     {

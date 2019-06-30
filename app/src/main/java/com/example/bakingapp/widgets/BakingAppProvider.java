@@ -26,8 +26,7 @@ public class BakingAppProvider extends AppWidgetProvider {
      * @param appWidgetIds ids which will be updated
      * @param ingredients the ingredients that will fill the ListView
      */
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetIds[], Ingredient[] ingredients)
+    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetIds[], Ingredient[] ingredients)
     {
         mIngredients = ingredients;
         for (int appWidgetId : appWidgetIds)
@@ -54,7 +53,6 @@ public class BakingAppProvider extends AppWidgetProvider {
     {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
-
 
     @Override
     public void onEnabled(Context context)

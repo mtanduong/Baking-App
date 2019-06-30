@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class IngredientsActivity extends AppCompatActivity
 {
-    //recipe ingredients,will map an array of ingredients
     private Ingredient[] mIngredients;
     private RecyclerView mRecyclerView;
     LinearLayoutManager mLinearLayoutManager = null;
@@ -32,22 +31,68 @@ public class IngredientsActivity extends AppCompatActivity
 
         if (savedInstanceState == null)
         {
-            returnIntentExtras();
+            getIntentExtras();
             initializeScreen();
         } else
         {
-            returnSavedInstanceData(savedInstanceState);
+            getSavedInstanceData(savedInstanceState);
             initializeScreen();
         }
 
-        //method will start the widget service
         startWidgetService();
 
         ingredientsLengthForTest = mIngredients.length;
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArray(RecipeAdapter.INGREDIENTS, mIngredients);
+    }
 
-    private void returnIntentExtras()
+    //Call WidgetUpdateService class to update widget to last recipe user observed
+    void startWidgetService()
+    {
+        Intent intent = new Intent(this, WidgetUpdateService.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArray(MainActivity.INGREDIENTS, mIngredients);
+        intent.putExtra(MainActivity.BUNDLE, bundle);
+        intent.setAction(WidgetUpdateService.WIDGET_UPDATE_ACTION);
+        startService(intent);
+    }
+
+    //Initialize IngredientActivity screen with Ingredient Recycler View
+    private void initializeScreen()
+    {
+        mRecyclerView = findViewById(R.id.recyclerview_ingredients);
+        //mLinearLayoutManager = new LinearLayoutManager(IngredientsActivity.this, LinearLayoutManager.VERTICAL, false);
+        mLinearLayoutManager = new LinearLayoutManager(IngredientsActivity.this, RecyclerView.VERTICAL, false);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.setHasFixedSize(true);
+        IngredientsAdapter ingredientsAdapter = new IngredientsAdapter(mIngredients);
+        mRecyclerView.setAdapter(ingredientsAdapter);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(IngredientsActivity.this,
+                DividerItemDecoration.VERTICAL));
+    }
+
+    private void getSavedInstanceData(@Nullable Bundle savedInstanceState)
+    {
+        if (savedInstanceState != null)
+        {
+            Parcelable[] ingredientsParcel = savedInstanceState.getParcelableArray(RecipeAdapter.INGREDIENTS);
+            if (ingredientsParcel != null)
+            {
+                mIngredients = new Ingredient[ingredientsParcel.length];
+                for (int i = 0; i < ingredientsParcel.length; i++)
+                {
+                    mIngredients[i] = (Ingredient) ingredientsParcel[i];
+                }
+            }
+        }
+    }
+
+    private void getIntentExtras()
     {
         if (getIntent().getExtras() != null)
         {
@@ -65,57 +110,5 @@ public class IngredientsActivity extends AppCompatActivity
                 }
             }
         }
-    }
-
-    private void returnSavedInstanceData(@Nullable Bundle savedInstanceState)
-    {
-        if (savedInstanceState != null)
-        {
-            Parcelable[] ingredientsParcel = savedInstanceState.getParcelableArray(RecipeAdapter.INGREDIENTS);
-            if (ingredientsParcel != null)
-            {
-                mIngredients = new Ingredient[ingredientsParcel.length];
-                for (int i = 0; i < ingredientsParcel.length; i++)
-                {
-                    mIngredients[i] = (Ingredient) ingredientsParcel[i];
-                }
-            }
-        }
-    }
-
-    /**
-     * method will initialize the screen of the IngredientsActivity
-     */
-    private void initializeScreen()
-    {
-        mRecyclerView = findViewById(R.id.recyclerview_ingredients);
-        //mLinearLayoutManager = new LinearLayoutManager(IngredientsActivity.this, LinearLayoutManager.VERTICAL, false);
-        mLinearLayoutManager = new LinearLayoutManager(IngredientsActivity.this, RecyclerView.VERTICAL, false);
-        mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mRecyclerView.setHasFixedSize(true);
-        IngredientsAdapter ingredientsAdapter = new IngredientsAdapter(mIngredients);
-        mRecyclerView.setAdapter(ingredientsAdapter);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(IngredientsActivity.this,
-                DividerItemDecoration.VERTICAL));
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState)
-    {
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArray(RecipeAdapter.INGREDIENTS, mIngredients);
-    }
-
-    /**
-     * will trigger the WidgetUpdateService to update the Widget to the last recipe that the user has seen.
-     */
-    void startWidgetService()
-    {
-        Intent i = new Intent(this, WidgetUpdateService.class);
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArray(MainActivity.INGREDIENTS, mIngredients);
-        i.putExtra(MainActivity.BUNDLE, bundle);
-        i.setAction(WidgetUpdateService.WIDGET_UPDATE_ACTION);
-        startService(i);
     }
 }

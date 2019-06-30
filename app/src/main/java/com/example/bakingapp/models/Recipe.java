@@ -9,31 +9,18 @@ import java.util.List;
 
 public class Recipe implements Parcelable
 {
-    //recipe id
     @SerializedName("id")
     private int mId;
-
-    //recipe name
     @SerializedName("name")
     private String mName;
-
-    //recipe ingredients,will map an array of ingredients
     @SerializedName("ingredients")
     private List<Ingredient> mIngredients;
-
-    //recipe steps,will map an array of steps to make the recipe
     @SerializedName("steps")
     private List<Steps> mSteps;
-
-    //number of servings
     @SerializedName("servings")
     private int mServing;
-
-    //image url
     @SerializedName("image")
     private String mImage;
-
-
 
     protected Recipe(Parcel in)
     {

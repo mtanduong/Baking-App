@@ -13,14 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.IngredientViewHolder>
 {
-    //class name,mainly for debugging
-    private static final String TAG = RecipeAdapter.class.getSimpleName();
 
-    private final Ingredient[] mIngredientArr;
+    private static final String TAG = RecipeAdapter.class.getSimpleName();
+    private final Ingredient[] ingredientList;
 
     public IngredientsAdapter(Ingredient[] mIngredients)
     {
-        this.mIngredientArr = mIngredients;
+        this.ingredientList = mIngredients;
     }
 
 
@@ -37,9 +36,9 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
     @Override
     public void onBindViewHolder(IngredientsAdapter.IngredientViewHolder holder, int position)
     {
-        holder.mQuantity = mIngredientArr[position].getmQuantity();
-        holder.mIngredient = mIngredientArr[position].getmIngredient();
-        holder.mMeasure = mIngredientArr[position].getmMeasure();
+        holder.mQuantity = ingredientList[position].getmQuantity();
+        holder.mIngredient = ingredientList[position].getmIngredient();
+        holder.mMeasure = ingredientList[position].getmMeasure();
         holder.ingredientTextView.setText(holder.mIngredient);
 
         String quantityAndMeasure = holder.mQuantity + " " + holder.mMeasure;
@@ -49,9 +48,9 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
     @Override
     public int getItemCount()
     {
-        if (mIngredientArr == null)
+        if (ingredientList == null)
             return 0;
-        return mIngredientArr.length;
+        return ingredientList.length;
     }
 
     public class IngredientViewHolder extends RecyclerView.ViewHolder
@@ -62,14 +61,12 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
         private final TextView ingredientTextView;
         private final TextView quantityAndMeasureTextView;
 
-
         public IngredientViewHolder(View itemView)
         {
             super(itemView);
 
             ingredientTextView = itemView.findViewById(R.id.ingredient);
             quantityAndMeasureTextView = itemView.findViewById(R.id.quantity);
-
         }
     }
 }

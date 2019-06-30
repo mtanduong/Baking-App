@@ -7,27 +7,14 @@ import com.google.gson.annotations.SerializedName;
 
 public class Steps implements Parcelable
 {
-    /**
-     * Steps base class
-     * will store all of the attributes that the steps has to offer within the json file
-     */
-    //step id
     @SerializedName("id")
     private String mId;
-
-    // recipe short description
     @SerializedName("shortDescription")
     private String mShortDescription;
-
-    //recipe long description
     @SerializedName("description")
     private String mRecipeDescription;
-
-    //recipe video url
     @SerializedName("videoURL")
     private String mVideoURL;
-
-    //recipe thumbnail url
     @SerializedName("thumbnailURL")
     private String mThumbnailURL;
 

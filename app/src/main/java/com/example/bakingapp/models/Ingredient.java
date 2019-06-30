@@ -7,16 +7,12 @@ import com.google.gson.annotations.SerializedName;
 
 public class Ingredient implements Parcelable
 {
-    //quantity of that ingredient
     @SerializedName("quantity")
     private double mQuantity;
-    //the way it is being measured
     @SerializedName("measure")
     private String mMeasure;
-    //the ingredient name
     @SerializedName("ingredient")
     private String mIngredient;
-
 
     protected Ingredient(Parcel in)
     {

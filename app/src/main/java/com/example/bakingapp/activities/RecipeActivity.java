@@ -22,38 +22,22 @@ import androidx.cardview.widget.CardView;
 
 public class RecipeActivity extends AppCompatActivity
 {
-    //recipe id
     private int mId;
-
-    //recipe name
     private String mName;
-
-    //recipe ingredients,will map an array of ingredients
     private Ingredient[] mIngredients;
-
-    //recipe steps,will map an array of steps to make the recipe
     public static Steps[] mSteps;
-
-    //number of servings
-    private int mServings;
-
-    private CardView mCardView;
-
     public static ArrayList<String> shortDescription;
-
-    private MasterFragment masterFragment;
-
+    private int mServings;
+    private CardView mCardView;
     public static int positionRecycler = -1;
-
     public static int mPosition;
-    public static boolean backPressed = false;
+    private MasterFragment masterFragment;
     private DetailFragment detailFragment;
-    public static int stepLengthForTest;
-
-    //flag that will indicate if we need to change the video rotation
-    private boolean isDetailFragmentCreated;
-    private long pausePosition;
     private int clickedPosition;
+    private long pausePosition;
+    private boolean isDetailFragmentCreated;
+    public static boolean backPressed = false;
+    public static int stepLengthForTest;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -61,10 +45,10 @@ public class RecipeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null)
         {
-            returnIntentExtras();
+            getIntentExtras();
         } else
         {
-            returnSavedInstanceData(savedInstanceState);
+            getSavedInstanceData(savedInstanceState);
         }
         putShortDescription();
 
@@ -99,7 +83,6 @@ public class RecipeActivity extends AppCompatActivity
         ingredientsOnClickListener();
     }
 
-
     @Override
     protected void onSaveInstanceState(Bundle outState)
     {
@@ -117,107 +100,6 @@ public class RecipeActivity extends AppCompatActivity
         outState.putLong("pausePosition", DetailFragment.pausePosition);
         outState.putInt("clickedPosition", DetailFragment.clickedPosition);
 
-    }
-
-    void returnSavedInstanceData(@Nullable Bundle savedInstanceState)
-    {
-        if (savedInstanceState != null)
-        {
-            mId = savedInstanceState.getInt(RecipeAdapter.ID);
-            mName = savedInstanceState.getString(RecipeAdapter.NAME);
-
-            Parcelable[] ingredientsParcel = savedInstanceState.getParcelableArray(RecipeAdapter.INGREDIENTS);
-            if (ingredientsParcel != null)
-            {
-                mIngredients = new Ingredient[ingredientsParcel.length];
-                for (int i = 0; i < ingredientsParcel.length; i++)
-                {
-                    mIngredients[i] = (Ingredient) ingredientsParcel[i];
-                }
-            }
-
-            Parcelable[] stepsParcel = savedInstanceState.getParcelableArray(RecipeAdapter.STEPS);
-            if (stepsParcel != null)
-            {
-                mSteps = new Steps[stepsParcel.length];
-                stepLengthForTest = mSteps.length;
-                for (int i = 0; i < stepsParcel.length; i++)
-                {
-                    mSteps[i] = (Steps) stepsParcel[i];
-                }
-            }
-
-            mServings = savedInstanceState.getInt(RecipeAdapter.SERVINGS);
-
-
-            if (savedInstanceState.containsKey("backPressed"))
-            {
-                backPressed = savedInstanceState.getBoolean("backPressed");
-            }
-
-        }
-    }
-
-    void returnIntentExtras()
-    {
-        if (getIntent().getExtras() != null)
-        {
-            mId = getIntent().getExtras().getInt(RecipeAdapter.ID);
-            mName = getIntent().getExtras().getString(RecipeAdapter.NAME);
-
-            Bundle ingredientsBundle = getIntent().getExtras().getBundle(RecipeAdapter.INGREDIENTS_BUNDLE);
-            if (ingredientsBundle != null)
-            {
-                Parcelable[] ingredientsParcelableArray = ingredientsBundle.getParcelableArray(RecipeAdapter.INGREDIENTS);
-                if (ingredientsParcelableArray != null)
-                {
-                    mIngredients = new Ingredient[ingredientsParcelableArray.length];
-                    for (int i = 0; i < ingredientsParcelableArray.length; i++)
-                    {
-                        mIngredients[i] = (Ingredient) ingredientsParcelableArray[i];
-                    }
-                }
-            }
-
-            Bundle stepsBundle = getIntent().getExtras().getBundle(RecipeAdapter.STEPS_BUNDLE);
-            if (stepsBundle != null)
-            {
-                Parcelable[] stepsParcelableArray = stepsBundle.getParcelableArray(RecipeAdapter.STEPS);
-                if (stepsParcelableArray != null)
-                {
-                    mSteps = new Steps[stepsParcelableArray.length];
-                    stepLengthForTest = mSteps.length;
-                    for (int i = 0; i < stepsParcelableArray.length; i++)
-                    {
-                        mSteps[i] = (Steps) stepsParcelableArray[i];
-                    }
-                }
-            }
-
-            mServings = getIntent().getExtras().getInt(RecipeAdapter.SERVINGS);
-        }
-    }
-
-    void ingredientsOnClickListener()
-    {
-        mCardView = findViewById(R.id.recipe_card);
-        mCardView.setOnClickListener(v ->
-        {
-            Intent intent = new Intent(this, IngredientsActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putParcelableArray(RecipeAdapter.INGREDIENTS, mIngredients);
-            intent.putExtra(RecipeAdapter.INGREDIENTS_BUNDLE, bundle);
-            startActivity(intent);
-        });
-    }
-
-    private void putShortDescription()
-    {
-        shortDescription = new ArrayList<>();
-        for (int i = 0; i < mSteps.length; i++)
-        {
-            shortDescription.add(mSteps[i].getmShortDescription());
-        }
     }
 
     @Override
@@ -291,6 +173,107 @@ public class RecipeActivity extends AppCompatActivity
         positionRecycler = 0;
         DetailFragment.isDetailFragmentCreated = false;
         return super.onSupportNavigateUp();
+    }
+
+    void getSavedInstanceData(@Nullable Bundle savedInstanceState)
+    {
+        if (savedInstanceState != null)
+        {
+            mId = savedInstanceState.getInt(RecipeAdapter.ID);
+            mName = savedInstanceState.getString(RecipeAdapter.NAME);
+
+            Parcelable[] ingredientsParcel = savedInstanceState.getParcelableArray(RecipeAdapter.INGREDIENTS);
+            if (ingredientsParcel != null)
+            {
+                mIngredients = new Ingredient[ingredientsParcel.length];
+                for (int i = 0; i < ingredientsParcel.length; i++)
+                {
+                    mIngredients[i] = (Ingredient) ingredientsParcel[i];
+                }
+            }
+
+            Parcelable[] stepsParcel = savedInstanceState.getParcelableArray(RecipeAdapter.STEPS);
+            if (stepsParcel != null)
+            {
+                mSteps = new Steps[stepsParcel.length];
+                stepLengthForTest = mSteps.length;
+                for (int i = 0; i < stepsParcel.length; i++)
+                {
+                    mSteps[i] = (Steps) stepsParcel[i];
+                }
+            }
+
+            mServings = savedInstanceState.getInt(RecipeAdapter.SERVINGS);
+
+
+            if (savedInstanceState.containsKey("backPressed"))
+            {
+                backPressed = savedInstanceState.getBoolean("backPressed");
+            }
+
+        }
+    }
+
+    void getIntentExtras()
+    {
+        if (getIntent().getExtras() != null)
+        {
+            mId = getIntent().getExtras().getInt(RecipeAdapter.ID);
+            mName = getIntent().getExtras().getString(RecipeAdapter.NAME);
+
+            Bundle ingredientsBundle = getIntent().getExtras().getBundle(RecipeAdapter.INGREDIENTS_BUNDLE);
+            if (ingredientsBundle != null)
+            {
+                Parcelable[] ingredientsParcelableArray = ingredientsBundle.getParcelableArray(RecipeAdapter.INGREDIENTS);
+                if (ingredientsParcelableArray != null)
+                {
+                    mIngredients = new Ingredient[ingredientsParcelableArray.length];
+                    for (int i = 0; i < ingredientsParcelableArray.length; i++)
+                    {
+                        mIngredients[i] = (Ingredient) ingredientsParcelableArray[i];
+                    }
+                }
+            }
+
+            Bundle stepsBundle = getIntent().getExtras().getBundle(RecipeAdapter.STEPS_BUNDLE);
+            if (stepsBundle != null)
+            {
+                Parcelable[] stepsParcelableArray = stepsBundle.getParcelableArray(RecipeAdapter.STEPS);
+                if (stepsParcelableArray != null)
+                {
+                    mSteps = new Steps[stepsParcelableArray.length];
+                    stepLengthForTest = mSteps.length;
+                    for (int i = 0; i < stepsParcelableArray.length; i++)
+                    {
+                        mSteps[i] = (Steps) stepsParcelableArray[i];
+                    }
+                }
+            }
+
+            mServings = getIntent().getExtras().getInt(RecipeAdapter.SERVINGS);
+        }
+    }
+
+    void ingredientsOnClickListener()
+    {
+        mCardView = findViewById(R.id.recipe_card);
+        mCardView.setOnClickListener(v ->
+        {
+            Intent intent = new Intent(this, IngredientsActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArray(RecipeAdapter.INGREDIENTS, mIngredients);
+            intent.putExtra(RecipeAdapter.INGREDIENTS_BUNDLE, bundle);
+            startActivity(intent);
+        });
+    }
+
+    private void putShortDescription()
+    {
+        shortDescription = new ArrayList<>();
+        for (int i = 0; i < mSteps.length; i++)
+        {
+            shortDescription.add(mSteps[i].getmShortDescription());
+        }
     }
 
 }

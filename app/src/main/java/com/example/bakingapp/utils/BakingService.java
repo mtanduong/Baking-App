@@ -11,5 +11,4 @@ public interface BakingService {
 
     @GET(BakingApi.BAKING_PATH)
     Call<List<Recipe>> getRecipes();
-    //Call<RecipeObject> getRecipes();
 }

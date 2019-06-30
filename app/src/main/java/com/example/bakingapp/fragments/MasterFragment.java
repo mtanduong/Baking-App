@@ -21,25 +21,24 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class MasterFragment extends Fragment {
-    RecyclerView recyclerView;
+
     public static int top = -1;
     public static LinearLayoutManager mLayoutManager;
-    private ArrayList<Steps> mSteps;
+    private ArrayList<Steps> stepList;
+    RecyclerView recyclerView;
 
     public MasterFragment()
     {
-        // Required empty public constructor
+
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View rootView = inflater.inflate(R.layout.fragment_master, container, false);
         recyclerView = rootView.findViewById(R.id.list_view_master);
-        mSteps = getStepsArrayList();
-        ShortDescAdapter shortDescAdapter = new ShortDescAdapter(RecipeActivity.shortDescription, mSteps);
+        stepList = getStepsArrayList();
+        ShortDescAdapter shortDescAdapter = new ShortDescAdapter(RecipeActivity.shortDescription, stepList);
         recyclerView.setAdapter(shortDescAdapter);
         mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setHasFixedSize(true);
@@ -57,8 +56,6 @@ public class MasterFragment extends Fragment {
         View v = recyclerView.getChildAt(0);
         top = (v == null) ? 0 : (v.getTop() - recyclerView.getPaddingTop());
     }
-
-
 
     ArrayList<Steps> getStepsArrayList()
     {

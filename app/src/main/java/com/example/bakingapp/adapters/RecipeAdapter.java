@@ -25,9 +25,7 @@ import butterknife.ButterKnife;
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>
 {
 
-    //class name,mainly for debugging
     private static final String TAG = RecipeAdapter.class.getSimpleName();
-    //parsed JSON
     private final Recipe[] mRecipes;
 
     public static final String ID = "mId";
@@ -37,7 +35,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     public static final String STEPS = "mSteps";
     public static final String STEPS_BUNDLE = "stepsBundle";
     public static final String SERVINGS = "mServings";
-
 
     public RecipeAdapter(Recipe[] recipes)
     {
@@ -63,40 +60,30 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         holder.mSteps = mRecipes[position].getmSteps();
         holder.mServings = mRecipes[position].getmServings();
         String imageUrl = mRecipes[position].getmImage();
-        Context context = holder.itemView.getContext();
+        //Context context = holder.itemView.getContext();
         holder.recipeName.setText(String.valueOf(holder.mName));
         holder.stepCountText.setText(String.valueOf(holder.mSteps.size()));
         holder.ingredientCountText.setText(String.valueOf(holder.mIngredients.size()));
 
-        //The Json that we query has 4 recipes,we will use a different photo for each recipe
         if (imageUrl != null && imageUrl.isEmpty())
         {
             switch (holder.mId)
             {
-                //Nutella Pie
                 case 1:
-                    //Picasso.with(context).load(R.drawable.nutella_pie).into(holder.imageView);
                     Picasso.get().load(R.drawable.nutella_pie).into(holder.recipeImage);
                     break;
-                //Brownies
                 case 2:
-                    //Picasso.with(context).load(R.drawable.brownies).into(holder.imageView);
                     Picasso.get().load(R.drawable.brownies).into(holder.recipeImage);
                     break;
-                //Yellow Cake
                 case 3:
-                    //Picasso.with(context).load(R.drawable.yellow_cake).into(holder.imageView);
                     Picasso.get().load(R.drawable.yellow_cake).into(holder.recipeImage);
                     break;
-                //Cheesecake
                 case 4:
-                    //Picasso.with(context).load(R.drawable.cheese_cake).into(holder.imageView);
                     Picasso.get().load(R.drawable.cheese_cake).into(holder.recipeImage);
                     break;
             }
         } else
         {
-            //Picasso.with(context).load(imageUrl).into(holder.imageView);
             Picasso.get().load(imageUrl).into(holder.recipeImage);
         }
     }
@@ -111,26 +98,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     public class RecipeViewHolder extends RecyclerView.ViewHolder
     {
-        //recipe id
         private int mId;
-
-        //recipe name
         private String mName;
-
-        //recipe ingredients,will map an array of ingredients
         private List<Ingredient> mIngredients;
-
-        //recipe steps,will map an array of steps to make the recipe
         private List<Steps> mSteps;
-
-        //number of servings
         private int mServings;
-
-        //image url
-        private String mImage;
-
-        //we will use a custom image if the image url is empty
-        private ImageView imageView;
+        //private String mImage;
+        //private ImageView imageView;
 
         @BindView(R.id.recipe_item) ImageView recipeImage;
         @BindView(R.id.recipe_name) TextView recipeName;
@@ -141,7 +115,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         {
             super(itemView);
 
-            //imageView = itemView.findViewById(R.id.recipe_item);
             ButterKnife.bind(this, itemView);
 
             recipeImage.setOnClickListener(v ->
