@@ -14,15 +14,13 @@ public class Ingredient implements Parcelable
     @SerializedName("ingredient")
     private String mIngredient;
 
-    protected Ingredient(Parcel in)
-    {
+    protected Ingredient(Parcel in) {
         mQuantity = in.readDouble();
         mMeasure = in.readString();
         mIngredient = in.readString();
     }
 
-    public static final Creator<Ingredient> CREATOR = new Creator<Ingredient>()
-    {
+    public static final Creator<Ingredient> CREATOR = new Creator<Ingredient>() {
         @Override
         public Ingredient createFromParcel(Parcel in)
         {
@@ -52,13 +50,9 @@ public class Ingredient implements Parcelable
     }
 
     @Override
-    public String toString()
-    {
-        return "Ingredients{" +
-                "mQuantity=" + mQuantity +
-                ", mMeasure='" + mMeasure + '\'' +
-                ", mIngredient='" + mIngredient + '\'' +
-                '}';
+    public String toString() {
+        return "Ingredients{" + "mQuantity=" + mQuantity + ", mMeasure='" + mMeasure + '\'' +
+                ", mIngredient='" + mIngredient + '\'' + '}';
     }
 
     @Override
@@ -68,10 +62,9 @@ public class Ingredient implements Parcelable
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags)
-    {
-        dest.writeDouble(mQuantity);
-        dest.writeString(mMeasure);
-        dest.writeString(mIngredient);
+    public void writeToParcel(Parcel parcel, int flags) {
+        parcel.writeDouble(mQuantity);
+        parcel.writeString(mMeasure);
+        parcel.writeString(mIngredient);
     }
 }

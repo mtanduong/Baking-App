@@ -16,23 +16,22 @@ import java.util.ArrayList;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ShortDescAdapter extends RecyclerView.Adapter<ShortDescAdapter.ViewHolder>
-{
+public class ShortDescAdapter extends RecyclerView.Adapter<ShortDescAdapter.ViewHolder> {
+
     private static final String TAG = ShortDescAdapter.class.getSimpleName();
-    private final ArrayList<String> mShortDescription;
-    private final ArrayList<Steps> mSteps;
+    private final ArrayList<String> shortDescriptionList;
+    private final ArrayList<Steps> stepList;
     private DetailFragment detailFragment;
     private Context context;
 
-    public ShortDescAdapter(ArrayList<String> mShortDescription, ArrayList<Steps> mSteps)
-    {
-        this.mShortDescription = mShortDescription;
-        this.mSteps = mSteps;
+    public ShortDescAdapter(ArrayList<String> shortDescriptionList, ArrayList<Steps> stepList) {
+        this.shortDescriptionList = shortDescriptionList;
+        this.stepList = stepList;
     }
 
     @Override
-    public ShortDescAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType)
-    {
+    public ShortDescAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+
         context = viewGroup.getContext();
         int layoutIdForListItem = R.layout.short_description_list_item;
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -41,9 +40,10 @@ public class ShortDescAdapter extends RecyclerView.Adapter<ShortDescAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(ShortDescAdapter.ViewHolder holder, int position)
-    {
-        holder.shortDescriptionTextView.setText(mShortDescription.get(position));
+    public void onBindViewHolder(ShortDescAdapter.ViewHolder holder, int position) {
+
+        holder.shortDescriptionTextView.setText(shortDescriptionList.get(position));
+
         if (!RecipeActivity.isTablet(context))
             holder.shortDescriptionTextView.setOnClickListener(v ->
             {
@@ -54,8 +54,8 @@ public class ShortDescAdapter extends RecyclerView.Adapter<ShortDescAdapter.View
                 ((RecipeActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.testframe, detailFragment).commit();
                 ((RecipeActivity) context).findViewById(R.id.recipe_card).setVisibility(View.GONE);
             });
-        else
-        {
+        else {
+
             holder.shortDescriptionTextView.setOnClickListener(v ->
             {
                 detailFragment = new DetailFragment();
@@ -68,19 +68,19 @@ public class ShortDescAdapter extends RecyclerView.Adapter<ShortDescAdapter.View
     }
 
     @Override
-    public int getItemCount()
-    {
-        if (mShortDescription == null)
+    public int getItemCount() {
+
+        if (shortDescriptionList == null)
             return 0;
-        return mShortDescription.size();
+        return shortDescriptionList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder
-    {
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
         private TextView shortDescriptionTextView;
 
-        public ViewHolder(View itemView)
-        {
+        public ViewHolder(View itemView) {
+
             super(itemView);
             shortDescriptionTextView = itemView.findViewById(R.id.mShortDescription);
         }

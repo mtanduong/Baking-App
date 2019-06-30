@@ -26,7 +26,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 {
 
     private static final String TAG = RecipeAdapter.class.getSimpleName();
-    private final Recipe[] mRecipes;
+    private final Recipe[] recipeList;
 
     public static final String ID = "mId";
     public static final String NAME = "mName";
@@ -38,12 +38,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     public RecipeAdapter(Recipe[] recipes)
     {
-        this.mRecipes = recipes;
+        this.recipeList = recipes;
     }
 
     @Override
-    public RecipeViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType)
-    {
+    public RecipeViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+
         Context context = viewGroup.getContext();
         int layoutIdForListItem = R.layout.recipe_list_item;
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -52,23 +52,21 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     }
 
     @Override
-    public void onBindViewHolder(RecipeViewHolder holder, int position)
-    {
-        holder.mId = mRecipes[position].getmId();
-        holder.mName = mRecipes[position].getmName();
-        holder.mIngredients = mRecipes[position].getmIngredients();
-        holder.mSteps = mRecipes[position].getmSteps();
-        holder.mServings = mRecipes[position].getmServings();
-        String imageUrl = mRecipes[position].getmImage();
-        //Context context = holder.itemView.getContext();
+    public void onBindViewHolder(RecipeViewHolder holder, int position) {
+
+        holder.mId = recipeList[position].getmId();
+        holder.mName = recipeList[position].getmName();
+        holder.mIngredients = recipeList[position].getmIngredients();
+        holder.mSteps = recipeList[position].getmSteps();
+        holder.mServings = recipeList[position].getmServings();
+        String imageUrl = recipeList[position].getmImage();
         holder.recipeName.setText(String.valueOf(holder.mName));
         holder.stepCountText.setText(String.valueOf(holder.mSteps.size()));
         holder.ingredientCountText.setText(String.valueOf(holder.mIngredients.size()));
 
-        if (imageUrl != null && imageUrl.isEmpty())
-        {
-            switch (holder.mId)
-            {
+        if (imageUrl != null && imageUrl.isEmpty()) {
+
+            switch (holder.mId) {
                 case 1:
                     Picasso.get().load(R.drawable.nutella_pie).into(holder.recipeImage);
                     break;
@@ -82,37 +80,34 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
                     Picasso.get().load(R.drawable.cheese_cake).into(holder.recipeImage);
                     break;
             }
-        } else
-        {
+        } else {
             Picasso.get().load(imageUrl).into(holder.recipeImage);
         }
     }
 
     @Override
-    public int getItemCount()
-    {
-        if (mRecipes == null)
+    public int getItemCount() {
+
+        if (recipeList == null)
             return 0;
-        return mRecipes.length;
+        return recipeList.length;
     }
 
-    public class RecipeViewHolder extends RecyclerView.ViewHolder
-    {
+    public class RecipeViewHolder extends RecyclerView.ViewHolder {
+
         private int mId;
         private String mName;
         private List<Ingredient> mIngredients;
         private List<Steps> mSteps;
         private int mServings;
-        //private String mImage;
-        //private ImageView imageView;
 
         @BindView(R.id.recipe_item) ImageView recipeImage;
         @BindView(R.id.recipe_name) TextView recipeName;
         @BindView(R.id.recipe_step_count) TextView stepCountText;
         @BindView(R.id.recipe_ingredient_count) TextView ingredientCountText;
 
-        public RecipeViewHolder(View itemView)
-        {
+        public RecipeViewHolder(View itemView) {
+
             super(itemView);
 
             ButterKnife.bind(this, itemView);
@@ -128,19 +123,18 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
                 v.getContext().startActivity(intent);
             });
-
         }
 
-        Bundle putIngredients()
-        {
+        Bundle putIngredients() {
+
             Ingredient[] ingredients = mIngredients.toArray(new Ingredient[mIngredients.size()]);
             Bundle ingredientsBundle = new Bundle();
             ingredientsBundle.putParcelableArray(INGREDIENTS, ingredients);
             return ingredientsBundle;
         }
 
-        Bundle putSteps()
-        {
+        Bundle putSteps() {
+
             Steps[] steps = mSteps.toArray(new Steps[mSteps.size()]);
             Bundle stepsBundle = new Bundle();
             stepsBundle.putParcelableArray(STEPS, steps);

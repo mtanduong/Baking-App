@@ -24,16 +24,16 @@ public class RecipeActivityBasicTest {
     @Rule
     public ActivityTestRule<MainActivity> mMainActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
-    public RecipeActivityBasicTest()
-    {
+    public RecipeActivityBasicTest() {
+
         Random rand = new Random();
         randPosition = rand.nextInt(3);
     }
 
     //Test to see if we can access RecipeActivity and randomly clicks on a possible recipe recycler list item
     @Test
-    public void recipeActivityBasicTest()
-    {
+    public void recipeActivityBasicTest() {
+
         onView(withId(R.id.recyclerview_recipes)).perform(RecyclerViewActions.actionOnItemAtPosition(randPosition, click()));
         onView(withId(R.id.list_view_master)).perform
                 (RecyclerViewActions.actionOnItemAtPosition(RecipeActivity.stepLengthForTest - 1, scrollTo()));

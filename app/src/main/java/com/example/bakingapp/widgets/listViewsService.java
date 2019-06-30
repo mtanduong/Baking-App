@@ -8,69 +8,53 @@ import android.widget.RemoteViewsService;
 import com.example.bakingapp.R;
 import com.example.bakingapp.models.Ingredient;
 
-/**
- * service class that will update our ListView Widget
- */
-public class listViewsService extends RemoteViewsService
-{
+public class listViewsService extends RemoteViewsService {
 
-    /**
-     * @param intent intent that triggered this service
-     * @return new ListViewsFactory Object with the appropriate implementation
-     */
-    public ListViewsFactory onGetViewFactory(Intent intent)
-    {
+    public ListViewsFactory onGetViewFactory(Intent intent) {
         return new ListViewsFactory(this.getApplicationContext());
     }
 }
 
-class ListViewsFactory implements RemoteViewsService.RemoteViewsFactory
-{
-    private Context mContext;
-    private Ingredient[] mIngredients;
+class ListViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
-    public ListViewsFactory(Context mContext)
+    private Ingredient[] ingredientList;
+    private Context context;
+
+    public ListViewsFactory(Context context)
     {
-        this.mContext = mContext;
+        this.context = context;
     }
 
     @Override
-    public void onCreate()
-    {
+    public void onCreate() {
 
     }
 
-    //Very Important,this is the place where the data is being changed each time by the adapter.
     @Override
     public void onDataSetChanged()
     {
-        mIngredients = BakingAppProvider.mIngredients;
+        ingredientList = BakingAppProvider.mIngredients;
     }
 
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy() {
 
     }
 
     @Override
-    public int getCount()
-    {
-        if (mIngredients == null)
+    public int getCount() {
+
+        if (ingredientList == null)
             return 0;
-        return mIngredients.length;
+        return ingredientList.length;
     }
 
-    /**
-     * @param position position of current view in the ListView
-     * @return a new RemoteViews object that will be one of many in the ListView
-     */
     @Override
-    public RemoteViews getViewAt(int position)
-    {
-        RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.recipe_text_view_widget_layout);
-        views.setTextViewText(R.id.text_view_recipe_widget, mIngredients[position].getmIngredient());
-        return views;
+    public RemoteViews getViewAt(int position) {
+
+        RemoteViews view = new RemoteViews(context.getPackageName(), R.layout.recipe_text_view_widget_layout);
+        view.setTextViewText(R.id.text_view_recipe_widget, ingredientList[position].getmIngredient());
+        return view;
     }
 
     @Override

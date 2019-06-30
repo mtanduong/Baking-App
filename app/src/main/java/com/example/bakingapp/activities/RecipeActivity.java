@@ -20,8 +20,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-public class RecipeActivity extends AppCompatActivity
-{
+public class RecipeActivity extends AppCompatActivity {
+
     private int mId;
     private String mName;
     private Ingredient[] mIngredients;
@@ -40,41 +40,36 @@ public class RecipeActivity extends AppCompatActivity
     public static int stepLengthForTest;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState)
-    {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        if (savedInstanceState == null)
-        {
+        if (savedInstanceState == null) {
             getIntentExtras();
-        } else
-        {
+        } else {
             getSavedInstanceData(savedInstanceState);
         }
+
         putShortDescription();
 
-        if (savedInstanceState != null)
-        {
-            if (masterFragment == null)
-            {
+        if (savedInstanceState != null) {
+
+            if (masterFragment == null) {
                 masterFragment = savedInstanceState.getParcelable("fragment");
             }
-            if (savedInstanceState.getInt("positionRecycler") >= 0)
-            {
+
+            if (savedInstanceState.getInt("positionRecycler") >= 0) {
                 positionRecycler = savedInstanceState.getInt("positionRecycler");
             }
 
-            if (savedInstanceState.getBoolean("isDetailFragmentCreated"))
-            {
+            if (savedInstanceState.getBoolean("isDetailFragmentCreated")) {
                 isDetailFragmentCreated = savedInstanceState.getBoolean("isDetailFragmentCreated");
             }
 
-            if (savedInstanceState.getLong("pausePosition") >= 0)
-            {
+            if (savedInstanceState.getLong("pausePosition") >= 0) {
                 pausePosition = savedInstanceState.getLong("pausePosition");
             }
 
-            if (savedInstanceState.getInt("clickedPosition") >= 0)
-            {
+            if (savedInstanceState.getInt("clickedPosition") >= 0) {
                 clickedPosition = savedInstanceState.getInt("clickedPosition");
             }
         }
@@ -84,8 +79,8 @@ public class RecipeActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState)
-    {
+    protected void onSaveInstanceState(Bundle outState) {
+
         super.onSaveInstanceState(outState);
 
         outState.putInt(RecipeAdapter.ID, mId);
@@ -93,7 +88,7 @@ public class RecipeActivity extends AppCompatActivity
         outState.putParcelableArray(RecipeAdapter.INGREDIENTS, mIngredients);
         outState.putParcelableArray(RecipeAdapter.STEPS, mSteps);
         outState.putInt(RecipeAdapter.SERVINGS, mServings);
-        outState.putInt("positionRecycler", MasterFragment.mLayoutManager.findFirstCompletelyVisibleItemPosition());
+        outState.putInt("positionRecycler", MasterFragment.layoutManager.findFirstCompletelyVisibleItemPosition());
         outState.putBoolean("backPressed", backPressed);
 
         outState.putBoolean("isDetailFragmentCreated", DetailFragment.isDetailFragmentCreated);
@@ -103,22 +98,22 @@ public class RecipeActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onStart()
-    {
-        if (masterFragment == null)
-        {
+    protected void onStart() {
+
+        if (masterFragment == null) {
+
             masterFragment = new MasterFragment();
             Bundle bundle = new Bundle();
             bundle.putParcelableArray(RecipeAdapter.STEPS, mSteps);
             masterFragment.setArguments(bundle);
         }
 
-        if (!isTablet(this) && !DetailFragment.isDetailFragmentCreated)
-        {
+        if (!isTablet(this) && !DetailFragment.isDetailFragmentCreated) {
+
             getSupportFragmentManager().beginTransaction().add(R.id.testframe, masterFragment).commit();
 
-        } else if (!isTablet(this) && DetailFragment.isDetailFragmentCreated)
-        {
+        } else if (!isTablet(this) && DetailFragment.isDetailFragmentCreated) {
+
             detailFragment = new DetailFragment();
             Bundle bundle = new Bundle();
             bundle.putInt("clickedPosition", DetailFragment.clickedPosition);
@@ -126,8 +121,8 @@ public class RecipeActivity extends AppCompatActivity
             detailFragment.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().replace(R.id.testframe, detailFragment).commit();
             findViewById(R.id.recipe_card).setVisibility(View.GONE);
-        } else
-        {
+        } else {
+
             getSupportFragmentManager().beginTransaction().add(R.id.testframe, masterFragment).commit();
             detailFragment = new DetailFragment();
             Bundle bundle = new Bundle();
@@ -140,22 +135,21 @@ public class RecipeActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onPause()
-    {
+    protected void onPause() {
+
         getSupportFragmentManager().beginTransaction().remove(masterFragment).commit();
         super.onPause();
     }
 
-    public static boolean isTablet(Context context)
-    {
+    public static boolean isTablet(Context context) {
+
         boolean xlarge = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == 4);
         boolean large = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE);
         return (xlarge || large);
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
 
         backPressed = true;
         DetailFragment.isOnBackPressed = true;
@@ -165,8 +159,7 @@ public class RecipeActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onSupportNavigateUp()
-    {
+    public boolean onSupportNavigateUp() {
 
         backPressed = true;
         DetailFragment.isOnNavigationUpPressed = true;
@@ -175,8 +168,8 @@ public class RecipeActivity extends AppCompatActivity
         return super.onSupportNavigateUp();
     }
 
-    void getSavedInstanceData(@Nullable Bundle savedInstanceState)
-    {
+    void getSavedInstanceData(@Nullable Bundle savedInstanceState) {
+
         if (savedInstanceState != null)
         {
             mId = savedInstanceState.getInt(RecipeAdapter.ID);
@@ -214,8 +207,8 @@ public class RecipeActivity extends AppCompatActivity
         }
     }
 
-    void getIntentExtras()
-    {
+    void getIntentExtras() {
+
         if (getIntent().getExtras() != null)
         {
             mId = getIntent().getExtras().getInt(RecipeAdapter.ID);
@@ -254,8 +247,8 @@ public class RecipeActivity extends AppCompatActivity
         }
     }
 
-    void ingredientsOnClickListener()
-    {
+    void ingredientsOnClickListener() {
+
         mCardView = findViewById(R.id.recipe_card);
         mCardView.setOnClickListener(v ->
         {
@@ -267,11 +260,10 @@ public class RecipeActivity extends AppCompatActivity
         });
     }
 
-    private void putShortDescription()
-    {
+    private void putShortDescription() {
+
         shortDescription = new ArrayList<>();
-        for (int i = 0; i < mSteps.length; i++)
-        {
+        for (int i = 0; i < mSteps.length; i++) {
             shortDescription.add(mSteps[i].getmShortDescription());
         }
     }

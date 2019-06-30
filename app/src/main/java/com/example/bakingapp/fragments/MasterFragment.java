@@ -19,56 +19,58 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MasterFragment extends Fragment {
 
     public static int top = -1;
-    public static LinearLayoutManager mLayoutManager;
+    public static LinearLayoutManager layoutManager;
     private ArrayList<Steps> stepList;
-    RecyclerView recyclerView;
 
-    public MasterFragment()
-    {
+    @BindView(R.id.list_view_master) RecyclerView recyclerView;
+
+    public MasterFragment() {
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        View rootView = inflater.inflate(R.layout.fragment_master, container, false);
-        recyclerView = rootView.findViewById(R.id.list_view_master);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_master, container, false);
+
+        ButterKnife.bind(this, view);
+
         stepList = getStepsArrayList();
         ShortDescAdapter shortDescAdapter = new ShortDescAdapter(RecipeActivity.shortDescription, stepList);
         recyclerView.setAdapter(shortDescAdapter);
-        mLayoutManager = new LinearLayoutManager(getContext());
+        layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),
-                DividerItemDecoration.VERTICAL));
-        return rootView;
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        return view;
     }
 
     @Override
-    public void onResume()
-    {
-        mLayoutManager.scrollToPosition(RecipeActivity.positionRecycler);
+    public void onResume() {
+
+        layoutManager.scrollToPosition(RecipeActivity.positionRecycler);
         super.onResume();
-        View v = recyclerView.getChildAt(0);
-        top = (v == null) ? 0 : (v.getTop() - recyclerView.getPaddingTop());
+        View view = recyclerView.getChildAt(0);
+        top = (view == null) ? 0 : (view.getTop() - recyclerView.getPaddingTop());
     }
 
-    ArrayList<Steps> getStepsArrayList()
-    {
-        Steps[] stepsArr = null;
+    ArrayList<Steps> getStepsArrayList() {
+
+        Steps[] stepList = null;
         Parcelable[] steps = getArguments().getParcelableArray(RecipeAdapter.STEPS);
-        if (steps != null)
-        {
-            stepsArr = new Steps[steps.length];
-            for (int i = 0; i < steps.length; i++)
-            {
-                stepsArr[i] = (Steps) steps[i];
+        if (steps != null) {
+
+            stepList = new Steps[steps.length];
+            for (int i = 0; i < steps.length; i++) {
+                stepList[i] = (Steps) steps[i];
             }
         }
-        return new ArrayList<>(Arrays.asList(stepsArr));
+        return new ArrayList<>(Arrays.asList(stepList));
     }
 }

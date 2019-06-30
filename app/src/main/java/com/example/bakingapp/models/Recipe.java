@@ -22,16 +22,14 @@ public class Recipe implements Parcelable
     @SerializedName("image")
     private String mImage;
 
-    protected Recipe(Parcel in)
-    {
+    protected Recipe(Parcel in) {
         mId = in.readInt();
         mName = in.readString();
         mServing = in.readInt();
         mImage = in.readString();
     }
 
-    public static final Creator<Recipe> CREATOR = new Creator<Recipe>()
-    {
+    public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {
         @Override
         public Recipe createFromParcel(Parcel in)
         {
@@ -76,16 +74,9 @@ public class Recipe implements Parcelable
     }
 
     @Override
-    public String toString()
-    {
-        return "Recipe{" +
-                "mId=" + mId +
-                ", mName='" + mName + '\'' +
-                ", mIngredients=" + mIngredients +
-                ", mSteps=" + mSteps +
-                ", mServing=" + mServing +
-                ", mImage='" + mImage + '\'' +
-                '}';
+    public String toString() {
+        return "Recipe{" + "mId=" + mId + ", mName='" + mName + '\'' + ", mIngredients=" + mIngredients +
+                ", mSteps=" + mSteps + ", mServing=" + mServing + ", mImage='" + mImage + '\'' + '}';
     }
 
     @Override
@@ -95,11 +86,10 @@ public class Recipe implements Parcelable
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags)
-    {
-        dest.writeInt(mId);
-        dest.writeString(mName);
-        dest.writeInt(mServing);
-        dest.writeString(mImage);
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(mId);
+        parcel.writeString(mName);
+        parcel.writeInt(mServing);
+        parcel.writeString(mImage);
     }
 }

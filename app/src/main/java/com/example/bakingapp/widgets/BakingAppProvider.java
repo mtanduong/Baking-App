@@ -13,56 +13,28 @@ import com.example.bakingapp.models.Ingredient;
 public class BakingAppProvider extends AppWidgetProvider {
     public static Ingredient[] mIngredients;
 
-    public BakingAppProvider()
-    {
+    public BakingAppProvider() {
 
     }
 
-    /**
-     * method will update the ListView each time the user opens the IngredientsActivity,
-     * meaning that the widget will always show the last IngredientsActivity Ingredients[] that the user seen.
-     * @param context app context
-     * @param appWidgetManager  app WidgetManger
-     * @param appWidgetIds ids which will be updated
-     * @param ingredients the ingredients that will fill the ListView
-     */
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetIds[], Ingredient[] ingredients)
-    {
-        mIngredients = ingredients;
-        for (int appWidgetId : appWidgetIds)
-        {
+    //Updates the list view each time a user opens the IngredientsActivity, which updates the widget with latest ingredient list
+    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetIds[], Ingredient[] ingredientList) {
+
+        mIngredients = ingredientList;
+        for (int appWidgetId : appWidgetIds) {
+
             Intent intent = new Intent(context, listViewsService.class);
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget);
-            views.setRemoteAdapter(R.id.list_view_widget, intent);
+            RemoteViews view = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget);
+            view.setRemoteAdapter(R.id.list_view_widget, intent);
             ComponentName component = new ComponentName(context, BakingAppProvider.class);
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.list_view_widget);
-            appWidgetManager.updateAppWidget(component, views);
+            appWidgetManager.updateAppWidget(component, view);
         }
-
     }
 
-    /**
-     * the widget will update itself each time the IngredientsActivity will open,meaning that this method
-     * is unnecessary in our implementation.
-     * @param context app context
-     * @param appWidgetManager the application WidgetManager
-     * @param appWidgetIds ids which will be updated
-     */
+    //Updates the widget when IngredientsActivity is created
     @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
-    {
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
-    }
-
-    @Override
-    public void onEnabled(Context context)
-    {
-
-    }
-
-    @Override
-    public void onDisabled(Context context)
-    {
-
     }
 }

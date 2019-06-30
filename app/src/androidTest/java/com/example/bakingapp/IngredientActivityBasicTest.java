@@ -27,16 +27,15 @@ public class IngredientActivityBasicTest {
     public ActivityTestRule<MainActivity> mMainActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
 
-    public IngredientActivityBasicTest()
-    {
+    public IngredientActivityBasicTest() {
+
         Random rand = new Random();
         randPosition = rand.nextInt(3);
     }
 
     //Test to see if we can access IngredientsActivity and scroll down to ensure all recycler list items are present
     @Test
-    public void ingredientsActivityBasicTest()
-    {
+    public void ingredientsActivityBasicTest() {
 
         onView(withId(R.id.recyclerview_recipes)).perform(RecyclerViewActions.actionOnItemAtPosition(randPosition, click()));
         onView(withId(R.id.ingredientsTextView)).perform(click());

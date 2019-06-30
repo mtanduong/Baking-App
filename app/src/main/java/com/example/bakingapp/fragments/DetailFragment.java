@@ -34,12 +34,12 @@ import butterknife.ButterKnife;
 public class DetailFragment extends Fragment {
 
     private final String TAG = getClass().getSimpleName();
-    private SimpleExoPlayer mExoPlayer;
-    private TextView mStepDescriptionTextView;
-    private ImageView leftArrowImageView;
-    private ImageView rightArrowImageView;
+    private SimpleExoPlayer exoPlayer;
+    private TextView stepDescription;
+    private ImageView backButton;
+    private ImageView forwardButton;
     private DetailFragment detailFragment;
-    private Uri mMediaUri;
+    private Uri uri;
     public static long position = -1;
     public static int clickedPosition;
     public static boolean isDetailFragmentCreated = false;
@@ -51,15 +51,13 @@ public class DetailFragment extends Fragment {
     @BindView(R.id.noVideoImageView) ImageView mNoVideoImageView;
     @BindView(R.id.playerView) SimpleExoPlayerView mPlayerView;
 
-
     public DetailFragment()
     {
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         clickedPosition = getArguments().getInt("clickedPosition");
@@ -69,153 +67,138 @@ public class DetailFragment extends Fragment {
         if (getArguments().getLong("pausePosition") >= 0)
             pausePosition = getArguments().getLong("pausePosition");
 
+        if (!isLandscape()) {
 
-        if (!isLandscape())
-        {
-            mStepDescriptionTextView = rootView.findViewById(R.id.stepDescriptionTextView);
-            leftArrowImageView = rootView.findViewById(R.id.leftArrowImageView);
-            rightArrowImageView = rootView.findViewById(R.id.rightArrowImageView);
+            stepDescription = rootView.findViewById(R.id.stepDescriptionTextView);
+            backButton = rootView.findViewById(R.id.leftArrowImageView);
+            forwardButton = rootView.findViewById(R.id.rightArrowImageView);
             setNavigation();
             navigationOnClickListener();
-        } else if (isLandscape() && !RecipeActivity.isTablet(getContext()))
-        {
+        } else if (isLandscape() && !RecipeActivity.isTablet(getContext())) {
+
             setImageVideoResource();
-        } else if (isLandscape() && RecipeActivity.isTablet(getContext()))
-        {
-            mStepDescriptionTextView = rootView.findViewById(R.id.stepDescriptionTextView);
+        } else if (isLandscape() && RecipeActivity.isTablet(getContext())) {
+
+            stepDescription = rootView.findViewById(R.id.stepDescriptionTextView);
         }
+
         isDetailFragmentCreated = true;
         orientation = getContext().getResources().getConfiguration().orientation;
         return rootView;
     }
 
     @Override
-    public void onPause()
-    {
-        if (mExoPlayer != null)
-            pausePosition = mExoPlayer.getCurrentPosition();
+    public void onPause() {
+
+        if (exoPlayer != null) {
+
+            pausePosition = exoPlayer.getCurrentPosition();
+        }
+
         getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         super.onPause();
-        if (Util.SDK_INT <= 23)
-        {
+        if (Util.SDK_INT <= 23) {
             releasePlayer();
         }
 
     }
 
     @Override
-    public void onStop()
-    {
+    public void onStop() {
+
         super.onStop();
-        if (Util.SDK_INT > 23)
-        {
+        if (Util.SDK_INT > 23) {
             releasePlayer();
         }
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
-        if (!isLandscape() || (isLandscape() && RecipeActivity.isTablet(getContext())))
-        {
+        if (!isLandscape() || (isLandscape() && RecipeActivity.isTablet(getContext()))) {
             if (setMedia())
-                initializePlayer(mMediaUri);
-        } else if (isLandscape() && !RecipeActivity.isTablet(getContext()))
-        {
+                initializePlayer(uri);
+        } else if (isLandscape() && !RecipeActivity.isTablet(getContext())) {
             setImageVideoResource();
-            initializePlayer(mMediaUri);
+            initializePlayer(uri);
         }
 
     }
 
     @Override
-    public void onDestroyView()
-    {
-        if (mExoPlayer != null)
-        {
-            position = mExoPlayer.getCurrentPosition();
+    public void onDestroyView() {
+        if (exoPlayer != null) {
+            position = exoPlayer.getCurrentPosition();
         }
         super.onDestroyView();
     }
 
     //Set the text and media of the fragment and returns boolean if video is present or not
-    private boolean setMedia()
-    {
-        mStepDescriptionTextView.setText(RecipeActivity.mSteps[clickedPosition].getmRecipeDescription());
+    private boolean setMedia() {
+        stepDescription.setText(RecipeActivity.mSteps[clickedPosition].getmRecipeDescription());
         return setImageVideoResource();
     }
 
     //Initialize the media Exoplayer
-    private void initializePlayer(Uri mediaUri)
-    {
-        if (mExoPlayer == null)
-        {
-            try
-            {
+    private void initializePlayer(Uri mediaUri) {
+        if (exoPlayer == null) {
+            try {
                 BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
                 TrackSelector trackSelector = new DefaultTrackSelector(new AdaptiveTrackSelection.Factory(bandwidthMeter));
-                mExoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
+                exoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
                 String userAgent = Util.getUserAgent(getContext(), "BakingApp");
                 MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
                         getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
-                mPlayerView.setPlayer(mExoPlayer);
+                mPlayerView.setPlayer(exoPlayer);
                 if (pausePosition != -1)
-                    mExoPlayer.seekTo(pausePosition);
+                    exoPlayer.seekTo(pausePosition);
                 else
-                    mExoPlayer.seekTo(0);
+                    exoPlayer.seekTo(0);
 
-                mExoPlayer.prepare(mediaSource);
-                mExoPlayer.setPlayWhenReady(true);
+                exoPlayer.prepare(mediaSource);
+                exoPlayer.setPlayWhenReady(true);
 
                 mPlayerView.hideController();
 
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 Log.e(TAG, "exoplayer error" + e.toString());
             }
         }
     }
 
     //Release media Exoplayer after fragment is destroyed
-    private void releasePlayer()
-    {
-        if (mExoPlayer != null)
-        {
-            mExoPlayer.stop();
-            mExoPlayer.release();
+    private void releasePlayer() {
+        if (exoPlayer != null) {
+            exoPlayer.stop();
+            exoPlayer.release();
         }
-        mExoPlayer = null;
+        exoPlayer = null;
     }
 
     //Adjusts navigation arrows depending on order of fragment clicked
-    private void setNavigation()
-    {
-        if (leftArrowImageView != null)
-        {
+    private void setNavigation() {
+        if (backButton != null) {
             if (clickedPosition == 0)
-                leftArrowImageView.setVisibility(View.GONE);
+                backButton.setVisibility(View.GONE);
         }
-        if (rightArrowImageView != null)
-        {
+        if (forwardButton != null) {
             if (clickedPosition == (RecipeActivity.mSteps.length - 1))
-                rightArrowImageView.setVisibility(View.GONE);
+                forwardButton.setVisibility(View.GONE);
         }
     }
 
     //Configure onClickListener for navigation buttons
-    private void navigationOnClickListener()
-    {
-        if (leftArrowImageView != null)
+    private void navigationOnClickListener() {
+        if (backButton != null)
             if (clickedPosition != 0)
-                leftArrowImageView.setOnClickListener(v ->
+                backButton.setOnClickListener(v ->
                 {
                     --clickedPosition;
                     setFragment();
                 });
-        if (rightArrowImageView != null)
+        if (forwardButton != null)
             if (RecipeActivity.mPosition != RecipeActivity.mSteps.length - 1)
-                rightArrowImageView.setOnClickListener(v ->
+                forwardButton.setOnClickListener(v ->
                 {
                     ++clickedPosition;
                     setFragment();
@@ -223,8 +206,7 @@ public class DetailFragment extends Fragment {
     }
 
     //Set fragment based on navigation
-    void setFragment()
-    {
+    void setFragment() {
         detailFragment = new DetailFragment();
         Bundle bundle = new Bundle();
         bundle.putBoolean("isReplaced", true);
@@ -234,8 +216,7 @@ public class DetailFragment extends Fragment {
     }
 
     //Check to see if orientation of device is landscape
-    private boolean isLandscape()
-    {
+    private boolean isLandscape() {
         int orientation = getActivity().getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE)
             return true;
@@ -243,20 +224,16 @@ public class DetailFragment extends Fragment {
     }
 
     //Sets the video and image of fragment and returns boolean if video is present or not
-    private boolean setImageVideoResource()
-    {
-        if (RecipeActivity.mSteps[clickedPosition].getmVideoURL().isEmpty())
-        {
+    private boolean setImageVideoResource() {
+        if (RecipeActivity.mSteps[clickedPosition].getmVideoURL().isEmpty()) {
             if (RecipeActivity.mSteps[clickedPosition].getmThumbnailURL().isEmpty())
             {
                 mPlayerView.setVisibility(View.GONE);
                 mNoVideoImageView.setVisibility(View.VISIBLE);
                 Picasso.get().load(R.drawable.default_image).into(mNoVideoImageView);
                 return false;
-            }
-            //the case where there is a thumbnailUrl
-            else
-            {
+            } else {
+                //If there is a thumbnailUrl
                 mPlayerView.setVisibility(View.GONE);
                 mNoVideoImageView.setVisibility(View.VISIBLE);
                 Picasso picasso = new Picasso.Builder(this.getContext())
@@ -270,9 +247,8 @@ public class DetailFragment extends Fragment {
                         .into(mNoVideoImageView);
                 return true;
             }
-        } else
-        {
-            mMediaUri = Uri.parse(RecipeActivity.mSteps[clickedPosition].getmVideoURL());
+        } else {
+            uri = Uri.parse(RecipeActivity.mSteps[clickedPosition].getmVideoURL());
             return true;
         }
     }

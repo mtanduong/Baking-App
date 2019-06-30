@@ -18,8 +18,7 @@ public class Steps implements Parcelable
     @SerializedName("thumbnailURL")
     private String mThumbnailURL;
 
-    protected Steps(Parcel in)
-    {
+    protected Steps(Parcel in) {
         mId = in.readString();
         mShortDescription = in.readString();
         mRecipeDescription = in.readString();
@@ -27,8 +26,7 @@ public class Steps implements Parcelable
         mThumbnailURL = in.readString();
     }
 
-    public static final Creator<Steps> CREATOR = new Creator<Steps>()
-    {
+    public static final Creator<Steps> CREATOR = new Creator<Steps>() {
         @Override
         public Steps createFromParcel(Parcel in)
         {
@@ -43,31 +41,10 @@ public class Steps implements Parcelable
     };
 
     @Override
-    public String toString()
-    {
-        return "Steps{" +
-                "mId='" + mId + '\'' +
-                ", mShortDescription='" + mShortDescription + '\'' +
-                ", mRecipeDescription='" + mRecipeDescription + '\'' +
-                ", mVideoURL='" + mVideoURL + '\'' +
-                ", mThumbnailURL='" + mThumbnailURL + '\'' +
-                '}';
-    }
-
-    @Override
-    public int describeContents()
-    {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags)
-    {
-        dest.writeString(mId);
-        dest.writeString(mShortDescription);
-        dest.writeString(mRecipeDescription);
-        dest.writeString(mVideoURL);
-        dest.writeString(mThumbnailURL);
+    public String toString() {
+        return "Steps{" + "mId='" + mId + '\'' + ", mShortDescription='" + mShortDescription + '\'' +
+                ", mRecipeDescription='" + mRecipeDescription + '\'' + ", mVideoURL='" + mVideoURL + '\'' +
+                ", mThumbnailURL='" + mThumbnailURL + '\'' + '}';
     }
 
     public String getmId()
@@ -93,5 +70,19 @@ public class Steps implements Parcelable
     public String getmThumbnailURL()
     {
         return mThumbnailURL;
+    }
+    @Override
+    public int describeContents()
+    {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(mId);
+        parcel.writeString(mShortDescription);
+        parcel.writeString(mRecipeDescription);
+        parcel.writeString(mVideoURL);
+        parcel.writeString(mThumbnailURL);
     }
 }

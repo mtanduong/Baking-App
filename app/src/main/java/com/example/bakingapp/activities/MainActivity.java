@@ -35,13 +35,13 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
 {
     private final String TAG = getClass().getSimpleName();
-    private RecyclerView mRecyclerView;
-    private Recipe[] mRecipesArr;
+    private RecyclerView recyclerView;
+    private Recipe[] recipeList;
     private ArrayList<Recipe> mRecipes;
     public static final String BUNDLE = "bundle";
     public static final String INGREDIENTS = "ingredients";
     private static final String KEY_RECIPES = "recipes";
-    private boolean tabletFlag = false;
+    private boolean isTablet = false;
     private BakingService retrofitService = BakingApi.createService();
 
     LinearLayoutManager mLinearLayoutManager = null;
@@ -54,8 +54,8 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.retry_button) Button retryButton;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -75,18 +75,16 @@ public class MainActivity extends AppCompatActivity
         });
 
         //If there is no previous saved state call API service otherwise retrieve previous savedInstanceState
-        if (savedInstanceState == null)
-        {
+        if (savedInstanceState == null) {
             callApi();
-        } else
-        {
+        } else {
+
             Parcelable[] recipes = savedInstanceState.getParcelableArray(KEY_RECIPES);
-            if (recipes != null)
-            {
-                mRecipesArr = new Recipe[recipes.length];
-                for (int i = 0; i < recipes.length; i++)
-                {
-                    mRecipesArr[i] = (Recipe) recipes[i];
+            if (recipes != null) {
+
+                recipeList = new Recipe[recipes.length];
+                for (int i = 0; i < recipes.length; i++) {
+                    recipeList[i] = (Recipe) recipes[i];
                 }
             }
             initializeScreen();
@@ -94,21 +92,20 @@ public class MainActivity extends AppCompatActivity
     }
 
     //API service call
-    void callApi()
-    {
+    void callApi() {
 
         progressBar.setVisibility(View.VISIBLE);
         Call<List<Recipe>> call = retrofitService.getRecipes();
 
-        call.enqueue(new Callback<List<Recipe>>()
-        {
+        call.enqueue(new Callback<List<Recipe>>() {
+
             @Override
-            public void onResponse(@NonNull Call<List<Recipe>> call, @NonNull Response<List<Recipe>> response)
-            {
+            public void onResponse(@NonNull Call<List<Recipe>> call, @NonNull Response<List<Recipe>> response) {
+
                 mRecipes = (ArrayList<Recipe>) response.body();
 
-                if (!response.isSuccessful())
-                {
+                if (!response.isSuccessful()) {
+
                     errorText.setVisibility(View.VISIBLE);
                     errorText.setText(R.string.server_error);
                     progressBar.setVisibility(View.GONE);
@@ -116,9 +113,9 @@ public class MainActivity extends AppCompatActivity
                     return;
                 }
 
-                if (mRecipes != null)
-                {
-                    mRecipesArr = mRecipes.toArray(new Recipe[mRecipes.size()]);
+                if (mRecipes != null) {
+
+                    recipeList = mRecipes.toArray(new Recipe[mRecipes.size()]);
                     mRecipes.clear();
                     initializeScreen();
                     progressBar.setVisibility(View.GONE);
@@ -126,8 +123,8 @@ public class MainActivity extends AppCompatActivity
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<Recipe>> call, @NonNull Throwable t)
-            {
+            public void onFailure(@NonNull Call<List<Recipe>> call, @NonNull Throwable t) {
+
                 Log.e(MainActivity.this.getClass().getSimpleName(), "" + t.getMessage());
 
                 errorText.setVisibility(View.VISIBLE);
@@ -136,69 +133,67 @@ public class MainActivity extends AppCompatActivity
                 noNetwork.setVisibility(View.VISIBLE);
                 retryButton.setVisibility(View.VISIBLE);
 
-                if (t instanceof IOException)
-                {
+                if (t instanceof IOException) {
+
                     errorText.setText(R.string.network_error);
                     noNetwork.setVisibility(View.VISIBLE);
-                } else
-                {
+                } else {
+
                     errorText.setText(R.string.parse_error);
                 }
             }
         });
-
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState)
-    {
+    protected void onSaveInstanceState(Bundle outState) {
+
         super.onSaveInstanceState(outState);
 
-        outState.putParcelableArray(KEY_RECIPES, mRecipesArr);
+        outState.putParcelableArray(KEY_RECIPES, recipeList);
     }
 
     //Initialize MainActivity screen with Recipe Recycler View
-    private void initializeScreen()
-    {
+    private void initializeScreen() {
+
         //Mobile mode
-        if (!isTablet(this))
-        {
+        if (!isTablet(this)) {
+
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
                 mLinearLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false);
                 //mLinearLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false);
             else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
                 mGridlayoutManager = new GridLayoutManager(MainActivity.this, 2);
-        }
-        //Tablet mode
-        else
-        {
-            tabletFlag = true;
+        } else {
+
+            //Tablet mode
+            isTablet = true;
             mGridlayoutManager = new GridLayoutManager(MainActivity.this, 2);
         }
 
-        mRecyclerView = findViewById(R.id.recyclerview_recipes);
+        recyclerView = findViewById(R.id.recyclerview_recipes);
 
-        if (!tabletFlag)
-        {
+        if (!isTablet) {
+
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-                mRecyclerView.setLayoutManager(mLinearLayoutManager);
+                recyclerView.setLayoutManager(mLinearLayoutManager);
             else
-                mRecyclerView.setLayoutManager(mGridlayoutManager);
-        } else
-        {
-            mRecyclerView.setLayoutManager(mGridlayoutManager);
+                recyclerView.setLayoutManager(mGridlayoutManager);
+        } else {
+
+            recyclerView.setLayoutManager(mGridlayoutManager);
         }
 
-        mRecyclerView.setHasFixedSize(true);
-        RecipeAdapter recipeAdapter = new RecipeAdapter(mRecipesArr);
-        mRecyclerView.setAdapter(recipeAdapter);
+        recyclerView.setHasFixedSize(true);
+        RecipeAdapter recipeAdapter = new RecipeAdapter(recipeList);
+        recyclerView.setAdapter(recipeAdapter);
     }
 
     //Checks if device is on a mobile (false) or tablet (true)
-    private boolean isTablet(Context context)
-    {
-        boolean xlarge = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == 4);
-        boolean large = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE);
-        return (xlarge || large);
+    private boolean isTablet(Context context) {
+
+        boolean isTablet = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == 4);
+        boolean isMobile = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE);
+        return (isTablet || isMobile);
     }
 }

@@ -16,96 +16,93 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class IngredientsActivity extends AppCompatActivity
-{
-    private Ingredient[] mIngredients;
-    private RecyclerView mRecyclerView;
+public class IngredientsActivity extends AppCompatActivity {
+
+    private Ingredient[] ingredientList;
+    private RecyclerView recyclerView;
     LinearLayoutManager mLinearLayoutManager = null;
     public static int ingredientsLengthForTest;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredients);
 
-        if (savedInstanceState == null)
-        {
+        if (savedInstanceState == null) {
+
             getIntentExtras();
             initializeScreen();
-        } else
-        {
+        } else {
+
             getSavedInstanceData(savedInstanceState);
             initializeScreen();
         }
 
         startWidgetService();
 
-        ingredientsLengthForTest = mIngredients.length;
+        ingredientsLengthForTest = ingredientList.length;
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState)
-    {
+    protected void onSaveInstanceState(Bundle outState) {
+
         super.onSaveInstanceState(outState);
-        outState.putParcelableArray(RecipeAdapter.INGREDIENTS, mIngredients);
+        outState.putParcelableArray(RecipeAdapter.INGREDIENTS, ingredientList);
     }
 
     //Call WidgetUpdateService class to update widget to last recipe user observed
-    void startWidgetService()
-    {
+    void startWidgetService() {
+
         Intent intent = new Intent(this, WidgetUpdateService.class);
         Bundle bundle = new Bundle();
-        bundle.putParcelableArray(MainActivity.INGREDIENTS, mIngredients);
+        bundle.putParcelableArray(MainActivity.INGREDIENTS, ingredientList);
         intent.putExtra(MainActivity.BUNDLE, bundle);
         intent.setAction(WidgetUpdateService.WIDGET_UPDATE_ACTION);
         startService(intent);
     }
 
     //Initialize IngredientActivity screen with Ingredient Recycler View
-    private void initializeScreen()
-    {
-        mRecyclerView = findViewById(R.id.recyclerview_ingredients);
-        //mLinearLayoutManager = new LinearLayoutManager(IngredientsActivity.this, LinearLayoutManager.VERTICAL, false);
+    private void initializeScreen() {
+
+        recyclerView = findViewById(R.id.recyclerview_ingredients);
         mLinearLayoutManager = new LinearLayoutManager(IngredientsActivity.this, RecyclerView.VERTICAL, false);
-        mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mRecyclerView.setHasFixedSize(true);
-        IngredientsAdapter ingredientsAdapter = new IngredientsAdapter(mIngredients);
-        mRecyclerView.setAdapter(ingredientsAdapter);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(IngredientsActivity.this,
-                DividerItemDecoration.VERTICAL));
+        recyclerView.setLayoutManager(mLinearLayoutManager);
+        recyclerView.setHasFixedSize(true);
+        IngredientsAdapter ingredientsAdapter = new IngredientsAdapter(ingredientList);
+        recyclerView.setAdapter(ingredientsAdapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(IngredientsActivity.this, DividerItemDecoration.VERTICAL));
     }
 
-    private void getSavedInstanceData(@Nullable Bundle savedInstanceState)
-    {
-        if (savedInstanceState != null)
-        {
-            Parcelable[] ingredientsParcel = savedInstanceState.getParcelableArray(RecipeAdapter.INGREDIENTS);
-            if (ingredientsParcel != null)
-            {
-                mIngredients = new Ingredient[ingredientsParcel.length];
-                for (int i = 0; i < ingredientsParcel.length; i++)
-                {
-                    mIngredients[i] = (Ingredient) ingredientsParcel[i];
+    private void getSavedInstanceData(@Nullable Bundle savedInstanceState) {
+
+        if (savedInstanceState != null) {
+
+            Parcelable[] ingredientParcel = savedInstanceState.getParcelableArray(RecipeAdapter.INGREDIENTS);
+            if (ingredientParcel != null) {
+
+                ingredientList = new Ingredient[ingredientParcel.length];
+                for (int i = 0; i < ingredientParcel.length; i++) {
+                    ingredientList[i] = (Ingredient) ingredientParcel[i];
                 }
             }
         }
     }
 
-    private void getIntentExtras()
-    {
-        if (getIntent().getExtras() != null)
-        {
-            Bundle ingredientsBundle = getIntent().getExtras().getBundle(RecipeAdapter.INGREDIENTS_BUNDLE);
-            if (ingredientsBundle != null)
-            {
-                Parcelable[] ingredientsParcelableArray = ingredientsBundle.getParcelableArray(RecipeAdapter.INGREDIENTS);
-                if (ingredientsParcelableArray != null)
-                {
-                    mIngredients = new Ingredient[ingredientsParcelableArray.length];
-                    for (int i = 0; i < ingredientsParcelableArray.length; i++)
-                    {
-                        mIngredients[i] = (Ingredient) ingredientsParcelableArray[i];
+    private void getIntentExtras() {
+
+        if (getIntent().getExtras() != null) {
+
+            Bundle bundle = getIntent().getExtras().getBundle(RecipeAdapter.INGREDIENTS_BUNDLE);
+            if (bundle != null) {
+
+                Parcelable[] ingredientParcel = bundle.getParcelableArray(RecipeAdapter.INGREDIENTS);
+                if (ingredientParcel != null) {
+
+                    ingredientList = new Ingredient[ingredientParcel.length];
+                    for (int i = 0; i < ingredientParcel.length; i++) {
+
+                        ingredientList[i] = (Ingredient) ingredientParcel[i];
                     }
                 }
             }
