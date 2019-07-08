@@ -24,10 +24,12 @@ The JSON file contains the recipes' instructions, ingredients, videos and images
 One of the skills you will demonstrate in this project is how to handle unexpected input in your data -- professional developers often cannot expect polished JSON data when building an app.
 
 Screen showing details from mobile version
+
 ![preview image](https://github.com/mtanduong/images/blob/master/baking-app-preview-small.png) ![preview image](https://github.com/mtanduong/images/blob/master/baking-app-preview2-small.png)
 ![preview image](https://github.com/mtanduong/images/blob/master/baking-app-preview3-small.png) ![preview image](https://github.com/mtanduong/images/blob/master/baking-app-preview4-small.png) ![preview image](https://github.com/mtanduong/images/blob/master/baking-app-preview5-small.png)
 
 
 Screen showing details from tablet version
+
 ![preview image](https://github.com/mtanduong/images/blob/master/baking-app-preview7-small.png)
 ![preview image](https://github.com/mtanduong/images/blob/master/baking-app-preview6-small.png)
